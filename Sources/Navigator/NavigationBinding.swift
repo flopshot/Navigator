@@ -15,7 +15,9 @@ struct NavigationBinding<ViewFactoryImpl: ViewFactory>: ViewModifier {
     
     func body(content: Content) -> some View {
         content
-            .navigationBarTitle("", displayMode: .large)
+            #if os(iOS)
+            .navigationViewStyle(.stack)
+            #endif
             .background(
                 NavigationLink(destination: viewFactory.makeView(screen: navigation.nextScreen(from: currentScreen)),
                                isActive: $showNextScreenBinding) {

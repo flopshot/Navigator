@@ -5,11 +5,10 @@ import PackageDescription
 
 let package = Package(
     name: "Navigator",
+    platforms: [.iOS(.v13), .macOS(.v11)],
     products: [
         // Products define the executables and libraries a package produces, and make them visible to other packages.
-        .library(
-            name: "Navigator",
-            targets: ["Navigator"]),
+        .library(name: "Navigator", type: .static, targets: ["Navigator"]),
     ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-collections.git", .upToNextMajor(from: "1.0.0"))
@@ -19,9 +18,9 @@ let package = Package(
         // Targets can depend on other targets in this package, and on products in packages this package depends on.
         .target(
             name: "Navigator",
-            dependencies: [
-                .product(name: "OrderedCollections", package: "swift-collections")
-            ]),
+            dependencies: [.product(name: "OrderedCollections", package: "swift-collections")],
+            exclude: ["Screen.swift"]
+        ),
         .testTarget(
             name: "NavigatorTests",
             dependencies: ["Navigator"]),
