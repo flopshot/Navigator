@@ -6,7 +6,7 @@ import SwiftUI
 
 /// Defines the contract that a client app will conform to in order
 /// to dynamically create SwiftUI views via screen lookup
-protocol ViewFactory {
+public protocol ViewFactory {
     associatedtype CreatedView: View
     associatedtype ScreenIdentifer: Hashable
     
@@ -16,6 +16,6 @@ protocol ViewFactory {
 }
 
 /// Used to wrap the client app's own defined enum
-enum ScreenWrapper<T: Hashable>: Hashable {
+public enum ScreenWrapper<T: Hashable>: Hashable {
     case screenWrapper(T?)
 }

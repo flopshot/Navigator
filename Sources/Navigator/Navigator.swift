@@ -6,7 +6,7 @@ import Combine
 import OrderedCollections
 import SwiftUI
 
-protocol Navigation {
+public protocol Navigation {
     associatedtype ScreenIdentifer: Hashable
     
     /// Holds the ordered uniqe set of screens that makes up the Navigation State of the client app,
@@ -30,27 +30,27 @@ protocol Navigation {
     func dismissCurrent(_ screen: ScreenIdentifer)
 }
 
-class Navigator<ScreenIdentifer: Hashable>: ObservableObject, Navigation {
+public class Navigator<ScreenIdentifer: Hashable>: ObservableObject, Navigation {
     
-    init(rootScreen: ScreenIdentifer) {
+    public init(rootScreen: ScreenIdentifer) {
         tab1NavSubjects = [rootScreen: Self.makeSubject()]
     }
 
-    var tab1NavSubjects: OrderedDictionary<ScreenIdentifer, CurrentValueSubject<Bool, Never>>
+    public var tab1NavSubjects: OrderedDictionary<ScreenIdentifer, CurrentValueSubject<Bool, Never>>
     
-    func nextScreen(from screen: ScreenIdentifer) -> ScreenIdentifer? {
+    public func nextScreen(from screen: ScreenIdentifer) -> ScreenIdentifer? {
         calculateNextScreen(from: screen)
     }
     
-    func navigate(to destinationScreen: ScreenIdentifer, from screen: ScreenIdentifer) {
+    public func navigate(to destinationScreen: ScreenIdentifer, from screen: ScreenIdentifer) {
         addScreenBindingAndToggleTrue(destinationScreen, from: screen)
     }
     
-    func onDismiss(_ screen: ScreenIdentifer) {
+    public func onDismiss(_ screen: ScreenIdentifer) {
         updateNavStateOnDismiss(screen)
     }
     
-    func dismissCurrent(_ screen: ScreenIdentifer) {
+    public func dismissCurrent(_ screen: ScreenIdentifer) {
         toggleNavigationLinkBindingFalse(screen)
     }
 }

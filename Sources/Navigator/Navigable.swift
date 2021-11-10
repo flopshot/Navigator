@@ -7,7 +7,7 @@ import SwiftUI
 
 /// For a View to opt into the Navigation library's system of
 /// dynamic navigation, a view mustconform to this protocol
-protocol Navigable: View {
+public protocol Navigable: View {
     /// Client app's implementation of ViewFactory
     associatedtype VF: ViewFactory
 

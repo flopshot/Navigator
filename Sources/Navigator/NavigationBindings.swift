@@ -8,13 +8,25 @@ import SwiftUI
 /// Client app Views that conform to Navigable and add this Modifier
 /// will then be able to call Navigation methods and programatically
 /// navigate between screens of their app, dynamically.
-struct NavigationBinding<ViewFactoryImpl: ViewFactory, ScreenIdentifer: Hashable>: ViewModifier {
+public struct NavigationBinding<ViewFactoryImpl: ViewFactory, ScreenIdentifer: Hashable>: ViewModifier {
     let navigation: Navigator<ScreenIdentifer>
     let viewFactory: ViewFactoryImpl
     let currentScreen: ScreenIdentifer
-    @Binding var showNextScreenBinding: Bool
+    var showNextScreenBinding: Binding<Bool>
     
-    func body(content: Content) -> some View {
+    public init(
+        navigation: Navigator<ScreenIdentifer>,
+        viewFactory: ViewFactoryImpl,
+        currentScreen: ScreenIdentifer,
+        showNextScreenBinding: Binding<Bool>
+    ) {
+        self.navigation = navigation
+        self.viewFactory = viewFactory
+        self.currentScreen = currentScreen
+        self.showNextScreenBinding = showNextScreenBinding
+    }
+    
+    public func body(content: Content) -> some View {
         // Calculate the next screen of the underlying bound View (if any)
         let nextScreen = navigation.nextScreen(from: currentScreen) as? ViewFactoryImpl.ScreenIdentifer
         content
@@ -26,7 +38,7 @@ struct NavigationBinding<ViewFactoryImpl: ViewFactory, ScreenIdentifer: Hashable
                 // which executes the native system View navigation
                 NavigationLink(
                     destination: viewFactory.makeView(screen: .screenWrapper(nextScreen)),
-                    isActive: $showNextScreenBinding
+                    isActive: showNextScreenBinding
                 ) {
                     EmptyView()
                 })
@@ -36,10 +48,10 @@ struct NavigationBinding<ViewFactoryImpl: ViewFactory, ScreenIdentifer: Hashable
                 // either push or pop Views
                 navigation.tab1NavSubjects.first(where: { $0.key == currentScreen })!.value,
                 perform: { shouldShowNextScreen in
-                    showNextScreenBinding = shouldShowNextScreen
+                    showNextScreenBinding.wrappedValue = shouldShowNextScreen
                 }
             )
-            .onChange(of: showNextScreenBinding, perform: { shouldShow in
+            .onChange(of: showNextScreenBinding.wrappedValue, perform: { shouldShow in
                 // If the user swipes to dismiss or clicks the NavigationBar back
                 // button, we will use this callback to update the Nav State in Navigation
                 if !shouldShow { navigation.onDismiss(currentScreen) }
