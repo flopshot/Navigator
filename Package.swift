@@ -5,7 +5,7 @@ import PackageDescription
 
 let package = Package(
     name: "Navigator",
-    platforms: [.iOS(.v13), .macOS(.v11)],
+    platforms: [.iOS(.v14), .macOS(.v11)],
     products: [
         // Products define the executables and libraries a package produces, and make them visible to other packages.
         .library(name: "Navigator", type: .static, targets: ["Navigator"]),
@@ -18,8 +18,7 @@ let package = Package(
         // Targets can depend on other targets in this package, and on products in packages this package depends on.
         .target(
             name: "Navigator",
-            dependencies: [.product(name: "OrderedCollections", package: "swift-collections")],
-            exclude: ["Screen.swift"]
+            dependencies: [.product(name: "OrderedCollections", package: "swift-collections")]
         ),
         .testTarget(
             name: "NavigatorTests",
