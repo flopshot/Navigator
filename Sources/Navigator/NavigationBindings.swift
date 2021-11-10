@@ -61,8 +61,8 @@ public struct NavigationBinding<ViewFactoryImpl: ViewFactory, ScreenIdentifer: H
 
 /// Apply this ViewModifier to the root screen View
 /// of your app to be able to cal Navigation methods
-struct NavigatorViewBinding: ViewModifier {
-    func body(content: Content) -> some View {
+public struct NavigatorViewBinding: ViewModifier {
+    public func body(content: Content) -> some View {
         NavigationView { content }
             #if os(iOS)
             .navigationViewStyle(.stack)
