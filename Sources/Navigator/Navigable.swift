@@ -21,42 +21,38 @@ public protocol Navigable: View {
     var viewFactory: VF { get }
     
     /// boolean used for the underlying NavigationLink.isActive binding
-    var showNextScreen: Binding<Bool> { get }
+    var showNextScreen: Bool { get set }
     
     /// The identifier of the current Navigable View screen
     var currentScreen: ScreenIdentifer { get }
-    
-    var showNextScreenSubject: CurrentValueSubject<Bool, Never> { get }
 }
 
 public extension View {
+    
+    /// Helper method to bind NavigationBindings modifier to current Navigable View.
+    /// Call this method to allow Navigable View to use Navigator property
     @inlinable
-    func bindNavigation<NV: Navigable>(_ navigable: NV) -> ModifiedContent<Self, NavigationBinding<NV.VF, NV.ScreenIdentifer>> {
+    func bindNavigation<NV: Navigable>(
+        _ navigable: NV,
+        binding showNextScreen: Binding<Bool>
+    ) -> ModifiedContent<Self, NavigationBinding<NV.VF, NV.ScreenIdentifer>> {
         self
         .modifier(
             NavigationBinding(
                 navigation: navigable.navigator,
                 viewFactory: navigable.viewFactory,
                 currentScreen: navigable.currentScreen,
-                showNextScreenBinding: navigable.showNextScreen
+                showNextScreenBinding: showNextScreen
             )
         )
     }
 }
 
-public extension Navigable {
-    var showNextScreenSubject: CurrentValueSubject<Bool, Never> {
-        CurrentValueSubject(false)
-    }
-    
-    var showNextScreen: Binding<Bool> {
-        Binding<Bool>(get: {showNextScreenSubject.value}, set: {showNextScreenSubject.send($0)})
-    }
-}
 //
 //struct RootScreen: Navigable {
 //    @EnvironmentObject var navigator: Navigator<MyScreen>
 //    @EnvironmentObject var viewFactory: MyViewFactory
+//    @State var showNextScreen: Bool = false
 //    var currentScreen: MyScreen
 //
 //    @State var showingAlert: Bool = false
@@ -64,12 +60,11 @@ public extension Navigable {
 //    var body: some View {
 //        List {
 //            Button("Next") {
-////                navigator.navigate(to: randomScreen(), from: currentScreen)
 //
 //            }
 //        }
 //        .navigationTitle("Root Screen")
-//        .bindNavigation(self)
+//        .bindNavigation(self, binding: $showNextScreen)
 //    }
 //}
 //
