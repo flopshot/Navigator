@@ -12,10 +12,10 @@ public protocol Navigable: View {
     associatedtype VF: ViewFactory
 
     /// Client app's implementation of a Hashable Screen type
-    associatedtype ScreenIdentifer: Hashable
+    associatedtype ScreenIdentifier: Hashable
 
     /// Navigator instance to be initialized in the Navigable View
-    var navigator: Navigator<ScreenIdentifer> { get }
+    var navigator: Navigator<ScreenIdentifier> { get }
     
     /// ViewFactory implementation instance to be initialized in the Navigable View
     var viewFactory: VF { get }
@@ -24,7 +24,7 @@ public protocol Navigable: View {
     var showNextScreen: Bool { get set }
     
     /// The identifier of the current Navigable View screen
-    var currentScreen: ScreenIdentifer { get }
+    var currentScreen: ScreenIdentifier { get }
 }
 
 public extension View {
@@ -35,7 +35,7 @@ public extension View {
     func bindNavigation<NV: Navigable>(
         _ navigable: NV,
         binding showNextScreen: Binding<Bool>
-    ) -> ModifiedContent<Self, NavigationBinding<NV.VF, NV.ScreenIdentifer>> {
+    ) -> ModifiedContent<Self, NavigationBinding<NV.VF, NV.ScreenIdentifier>> {
         self
         .modifier(
             NavigationBinding(
@@ -47,44 +47,3 @@ public extension View {
         )
     }
 }
-
-//
-//struct RootScreen: Navigable {
-//    @EnvironmentObject var navigator: Navigator<MyScreen>
-//    @EnvironmentObject var viewFactory: MyViewFactory
-//    @State var showNextScreen: Bool = false
-//    var currentScreen: MyScreen
-//
-//    @State var showingAlert: Bool = false
-//
-//    var body: some View {
-//        List {
-//            Button("Next") {
-//
-//            }
-//        }
-//        .navigationTitle("Root Screen")
-//        .bindNavigation(self, binding: $showNextScreen)
-//    }
-//}
-//
-//
-//class MyViewFactory: ViewFactory, ObservableObject {
-//
-//    @ViewBuilder
-//    func makeView(screen: ScreenWrapper<MyScreen>) -> some View {
-//        switch screen {
-//        case .screenWrapper(let myScreen):
-//            switch myScreen {
-//            case .rootScreen:
-//                RootScreen(currentScreen: myScreen!)
-//            case .none:
-//                EmptyView()
-//            }
-//        }
-//    }
-//}
-//
-//enum MyScreen: Hashable {
-//    case rootScreen(id: UUID = UUID())
-//}
