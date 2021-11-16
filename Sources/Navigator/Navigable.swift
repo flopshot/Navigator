@@ -44,7 +44,7 @@ public extension View {
     }
 }
 
-extension Navigable {
+public extension Navigable {
     var showNextScreenSubject: CurrentValueSubject<Bool, Never> {
         CurrentValueSubject(false)
     }
