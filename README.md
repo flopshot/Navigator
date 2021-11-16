@@ -18,14 +18,7 @@ struct DetailScreen: Navigable {
             navigator.navigate(to: anotherScreen(), from: currentScreen)
         }
         .navigationTitle("Detail Screen")
-        .modifier(
-            NavigationBinding(
-                navigation: navigator,
-                viewFactory: viewFactory,
-                currentScreen: currentScreen,
-                showNextScreenBinding: $showNextScreen
-            )
-        )
+        .bindNavigation(self, binding: $showNextScreen)
     }
 }
 ```

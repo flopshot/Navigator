@@ -12,10 +12,10 @@ public protocol Navigable: View {
     associatedtype VF: ViewFactory
 
     /// Client app's implementation of a Hashable Screen type
-    associatedtype ScreenIdentifer: Hashable
+    associatedtype ScreenIdentifier: Hashable
 
     /// Navigator instance to be initialized in the Navigable View
-    var navigator: Navigator<ScreenIdentifer> { get }
+    var navigator: Navigator<ScreenIdentifier> { get }
     
     /// ViewFactory implementation instance to be initialized in the Navigable View
     var viewFactory: VF { get }
@@ -24,5 +24,26 @@ public protocol Navigable: View {
     var showNextScreen: Bool { get set }
     
     /// The identifier of the current Navigable View screen
-    var currentScreen: ScreenIdentifer { get }
+    var currentScreen: ScreenIdentifier { get }
+}
+
+public extension View {
+    
+    /// Helper method to bind NavigationBindings modifier to current Navigable View.
+    /// Call this method to allow Navigable View to use Navigator property
+    @inlinable
+    func bindNavigation<NV: Navigable>(
+        _ navigable: NV,
+        binding showNextScreen: Binding<Bool>
+    ) -> ModifiedContent<Self, NavigationBinding<NV.VF, NV.ScreenIdentifier>> {
+        self
+        .modifier(
+            NavigationBinding(
+                navigation: navigable.navigator,
+                viewFactory: navigable.viewFactory,
+                currentScreen: navigable.currentScreen,
+                showNextScreenBinding: showNextScreen
+            )
+        )
+    }
 }
