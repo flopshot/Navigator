@@ -26,8 +26,8 @@ public protocol Navigation {
     func onDismiss(_ screen: ScreenIdentifer)
     
     /// Triggers dismissal of the current screen. Client app
-    ///  will call this to immediately pop the screen
-    func dismissCurrent(_ screen: ScreenIdentifer)
+    /// will call this to immediately pop the screen
+    func dismissCurrent()
 }
 
 public class Navigator<ScreenIdentifer: Hashable>: ObservableObject, Navigation {
@@ -50,8 +50,8 @@ public class Navigator<ScreenIdentifer: Hashable>: ObservableObject, Navigation 
         updateNavStateOnDismiss(screen)
     }
     
-    public func dismissCurrent(_ screen: ScreenIdentifer) {
-        toggleNavigationLinkBindingFalse(screen)
+    public func dismissCurrent() {
+        toggleNavigationLinkBindingFalse()
     }
 }
 
@@ -86,9 +86,8 @@ private extension Navigator {
     
     /// Find the current screen and associated Boolean combine subject in the nav state OrderedDictionary
     /// and send false in order to toggle the NavigationLink.isActive to false and dismiss the view
-    func toggleNavigationLinkBindingFalse(_ screen: ScreenIdentifer) {
-        let currentIdx = navStack.keys.lastIndex(where: { $0 == screen })!
-        if let parentScreenId = navStack.keys.elements.item(at: currentIdx - 1) {
+    func toggleNavigationLinkBindingFalse() {
+        if let parentScreenId = navStack.keys.elements.item(at: navStack.keys.count - 2) {
             navStack.first(where: { $0.key == parentScreenId })!.value.send(false)
         }
     }

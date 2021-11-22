@@ -6,7 +6,7 @@ import SwiftUI
 
 /// Defines the contract that a client app will conform to in order
 /// to dynamically create SwiftUI views via screen lookup
-public protocol ViewFactory {
+public protocol ViewFactory: AnyObject {
     associatedtype CreatedView: View
     associatedtype ScreenIdentifer: Hashable
     
