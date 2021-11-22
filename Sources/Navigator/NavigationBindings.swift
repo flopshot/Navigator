@@ -46,7 +46,7 @@ public struct NavigationBinding<ViewFactoryImpl: ViewFactory, ScreenIdentifer: H
                 // This relays the Navigation publisher associated with the underlying
                 // Navigable screen and updates the View's showNextScreenBinding to
                 // either push or pop Views
-                navigation.tab1NavSubjects.first(where: { $0.key == currentScreen })!.value,
+                navigation.navStack.first(where: { $0.key == currentScreen })!.value,
                 perform: { shouldShowNextScreen in
                     showNextScreenBinding.wrappedValue = shouldShowNextScreen
                 }
