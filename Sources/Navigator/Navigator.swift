@@ -31,17 +31,17 @@ public protocol Navigation {
 
 public class Navigator<ScreenIdentifer: Hashable, ViewFactoryImpl: ViewFactory>: ObservableObject, Navigation {
 
-    let viewFactory: ViewFactoryImpl
-    
+    public var navStack: OrderedDictionary<ScreenIdentifer, CurrentValueSubject<Bool, Never>>
+
     required public init(rootScreen: ScreenIdentifer, viewFactory: ViewFactoryImpl) {
         navStack = [rootScreen: Self.makeSubject()]
         self.viewFactory = viewFactory
     }
 
-    public var navStack: OrderedDictionary<ScreenIdentifer, CurrentValueSubject<Bool, Never>>
+    let viewFactory: ViewFactoryImpl
 
     @ViewBuilder
-    public func nextView(from screen: ScreenIdentifer) -> some View {
+    func nextView(from screen: ScreenIdentifer) -> some View {
         let nextScreen = calculateNextScreen(from: screen) as? ViewFactoryImpl.ScreenIdentifer
         viewFactory.makeView(screen: .screenWrapper(nextScreen))
     }

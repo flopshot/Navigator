@@ -6,7 +6,7 @@ navigate to other Views programatically in your app.
 
 ```swift
 struct DetailScreen: Navigable {
-    @EnvironmentObject var navigator: Navigator<Screen>    
+    @EnvironmentObject var navigator: Navigator<Screens, MyViewFactory>    
     @State var showNextScreen: Bool = false
     var currentScreen: Screen
     
