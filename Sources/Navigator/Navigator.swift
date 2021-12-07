@@ -8,14 +8,13 @@ import SwiftUI
 
 public protocol Navigation {
     associatedtype ScreenIdentifer: Hashable
+    associatedtype ViewFactoryImpl: ViewFactory
+
+    init(rootScreen: ScreenIdentifer, viewFactory: ViewFactoryImpl)
     
     /// Holds the ordered uniqe set of screens that makes up the Navigation State of the client app,
     /// along with its associated Boolean subject, which toggles the NavigationLink.isActive
     var navStack: OrderedDictionary<ScreenIdentifer, CurrentValueSubject<Bool, Never>> { get }
-    
-    /// Internally calculates the next screen given the current nav state
-    /// when the next screen is to be presented
-    func nextScreen(from screen: ScreenIdentifer) -> ScreenIdentifer?
     
     /// Triggers navigation to the next screen. Client app will call this to
     /// immediately navigate to the next screen from the current screen
@@ -30,16 +29,21 @@ public protocol Navigation {
     func dismissCurrent()
 }
 
-public class Navigator<ScreenIdentifer: Hashable>: ObservableObject, Navigation {
+public class Navigator<ScreenIdentifer: Hashable, ViewFactoryImpl: ViewFactory>: ObservableObject, Navigation {
+
+    let viewFactory: ViewFactoryImpl
     
-    public init(rootScreen: ScreenIdentifer) {
+    required public init(rootScreen: ScreenIdentifer, viewFactory: ViewFactoryImpl) {
         navStack = [rootScreen: Self.makeSubject()]
+        self.viewFactory = viewFactory
     }
 
     public var navStack: OrderedDictionary<ScreenIdentifer, CurrentValueSubject<Bool, Never>>
-    
-    public func nextScreen(from screen: ScreenIdentifer) -> ScreenIdentifer? {
-        calculateNextScreen(from: screen)
+
+    @ViewBuilder
+    public func nextView(from screen: ScreenIdentifer) -> some View {
+        let nextScreen = calculateNextScreen(from: screen) as? ViewFactoryImpl.ScreenIdentifer
+        viewFactory.makeView(screen: .screenWrapper(nextScreen))
     }
     
     public func navigate(to destinationScreen: ScreenIdentifer) {

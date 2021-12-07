@@ -6,16 +6,13 @@ navigate to other Views programatically in your app.
 
 ```swift
 struct DetailScreen: Navigable {
-    @EnvironmentObject var navigator: Navigator<Screen>
-    @EnvironmentObject var viewFactory: MyViewFactory
-    
+    @EnvironmentObject var navigator: Navigator<Screen>    
     @State var showNextScreen: Bool = false
-    
     var currentScreen: Screen
     
     var body: some View {
         Button("Next") {
-            navigator.navigate(to: anotherScreen(), from: currentScreen)
+            navigator.navigate(to: anotherScreen())
         }
         .navigationTitle("Detail Screen")
         .bindNavigation(self, binding: $showNextScreen)
@@ -82,8 +79,7 @@ struct MyApp: App {
         WindowGroup {
             RootScreen()
                 .modifier(NavigatorViewBinding())
-                .environmentObject(Navigator(rootScreen: Screens.rootScreen)
-                .environmentObject(MyViewFactory())
+                .environmentObject(Navigator(rootScreen: Screens.rootScreen, viewFactory: MyViewFactory())
         }
     }
 }
@@ -96,11 +92,8 @@ and apply the `bindNavigation(_:binding:)` view modifier
 
 ```swift
 struct RootScreen: Navigable {
-    @EnvironmentObject var navigator: Navigator<Screens>
-    @EnvironmentObject var viewFactory: MyViewFactory
-    
+    @EnvironmentObject var navigator: Navigator<Screens, MyViewFactory>    
     @State var showNextScreen: Bool = false
-    
     var currentScreen = .rootScreen
     
     var body: some View {
@@ -117,11 +110,8 @@ struct RootScreen: Navigable {
 
 ```swift
 struct DetailScreen: Navigable {
-    @EnvironmentObject var navigator: Navigator<Screens>
-    @EnvironmentObject var viewFactory: MyViewFactory
-    
+    @EnvironmentObject var navigator: Navigator<Screens, MyViewFactory>  
     @State var showNextScreen: Bool = false
-    
     var currentScreen: Screens
     
     var body: some View {
@@ -164,11 +154,8 @@ View navigation
 
 ```swift
 struct RootScreen: Navigable {
-    @EnvironmentObject var navigator: Navigator<Screens>
-    @EnvironmentObject var viewFactory: MyViewFactory
-    
+    @EnvironmentObject var navigator: Navigator<Screens, MyViewFactory>
     @State var showNextScreen: Bool = false
-    
     var currentScreen = .rootScreen
     
     var body: some View {
@@ -191,11 +178,8 @@ struct RootScreen: Navigable {
 
 ```swift
 struct DetailScreen: Navigable {
-    @EnvironmentObject var navigator: Navigator<Screens>
-    @EnvironmentObject var viewFactory: MyViewFactory
-    
+    @EnvironmentObject var navigator: Navigator<Screens, MyViewFactory>    
     @State var showNextScreen: Bool = false
-    
     var currentScreen: Screens
     
     var body: some View {
