@@ -9,26 +9,21 @@ import SwiftUI
 /// will then be able to call Navigation methods and programatically
 /// navigate between screens of their app, dynamically.
 public struct NavigationBinding<ViewFactoryImpl: ViewFactory, ScreenIdentifer: Hashable>: ViewModifier {
-    let navigation: Navigator<ScreenIdentifer>
-    let viewFactory: ViewFactoryImpl
+    let navigation: Navigator<ScreenIdentifer, ViewFactoryImpl>
     let currentScreen: ScreenIdentifer
     var showNextScreenBinding: Binding<Bool>
     
     public init(
-        navigation: Navigator<ScreenIdentifer>,
-        viewFactory: ViewFactoryImpl,
+        navigation: Navigator<ScreenIdentifer, ViewFactoryImpl>,
         currentScreen: ScreenIdentifer,
         showNextScreenBinding: Binding<Bool>
     ) {
         self.navigation = navigation
-        self.viewFactory = viewFactory
         self.currentScreen = currentScreen
         self.showNextScreenBinding = showNextScreenBinding
     }
     
     public func body(content: Content) -> some View {
-        // Calculate the next screen of the underlying bound View (if any)
-        let nextScreen = navigation.nextScreen(from: currentScreen) as? ViewFactoryImpl.ScreenIdentifer
         content
             #if os(iOS)
             .navigationBarTitle("", displayMode: .large)
@@ -37,7 +32,7 @@ public struct NavigationBinding<ViewFactoryImpl: ViewFactory, ScreenIdentifer: H
                 // This is the hidden NavigationLink of every Navigable bound View
                 // which executes the native system View navigation
                 NavigationLink(
-                    destination: viewFactory.makeView(screen: .screenWrapper(nextScreen)),
+                    destination: navigation.nextView(from: currentScreen),
                     isActive: showNextScreenBinding
                 ) {
                     EmptyView()
