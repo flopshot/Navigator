@@ -37,12 +37,10 @@ enum Screens: Hashable {
 
 Then create a class that conforms to `ViewFactory` and 
 implement `makeView(screen:)` so that the given `Screens`
-enum returns the associated `View`. Ensure it conforms
-to `ObservedObject` for `EnvironmentObject` dependency 
-injection
+enum returns the associated `View`.
 
 ```swift 
-class MyViewFactory: ViewFactory, ObservableObject {
+class MyViewFactory: ViewFactory {
     
     @ViewBuilder
     func makeView(screen: ScreenWrapper<Screens>) -> some View {
