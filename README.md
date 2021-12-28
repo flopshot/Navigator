@@ -215,3 +215,91 @@ struct DetailScreen: ScreenView {
     }
 }
 ```
+
+## Advanced
+As stated previously, the `Navigator` class has the property `navStack` which keeps
+a stack (OrderedDictionary) of the `ScreenView` associated `Screens` enums that are 
+currently active in the NavigationView. Clients can use it to execte custom navigation logic.
+```swift
+
+    /// Holds the ordered uniqe set of screens that makes up the Navigation State of the client app,
+    /// along with its associated Boolean subject, which toggles the NavigationLink.isActive
+    var navStack: OrderedDictionary<ScreenIdentifer, CurrentValueSubject<Bool, Never>> { get }
+    
+```
+
+As an example, we can use it create an extention funtion on `Navigator` called `popToDetailWithSpecificIdOrRoot(id: UUID)`
+
+```swift
+extension Navigator where ScreenIdentifer == Screens {
+    func popToDetailWithSpecificIdOrRoot(id: UUID) {
+    
+        // Since all screens that have been pushed onto the NavigationView
+        // are stored in the navStack as keys, we can simply search through
+        // them for the specific detail screen with the called id
+        
+        if let detailScreen: Screens = navStack.keys.elements.first(where: {
+            if case Screens.detailScreen(let detailID) = $0 { 
+                return detailID == id 
+            }
+            return false
+        }) {
+        
+            // Using the first(where:) collections function
+            // if we find the detail screen with the called id
+            // then the navStack Dictionary can be keyed
+            // on the found detailScreen to return the Combine subject
+            // that controls the NavigationLink.isActive binding
+            // for that detailScreen
+            let navigationIsActiveBinding = navStack[greenScreen]!
+            
+            // When the send the false flag to the NavigationLink.isActive binding
+            // it will dismiss all views off the NavigationView stack to reveal
+            // the detailScreen
+            navigationIsActiveBinding.send(false)
+        } else {
+        
+            // if the detail screen is not found in the current stack
+            // then we default to pop all views off the stack to reveal the
+            // rootScreen view
+            let rootScreenNavigationIsActiveBinding = navStack.elements[0]
+            rootScreenNavigationIsActiveBinding.value.send(false)
+            
+            // could also call self.popToRoot()
+        }
+    }
+}
+```
+
+Because the `Navigator` class can be a singleton not copuled to any specific view, we can call
+`popToDetailWithSpecificIdOrRoot(id:)` anywhere in the app.
+
+```swift
+@main
+struct MyApp: App {
+
+    // Keep reference to the navigator, either as a local property or in an abstraction
+    // layer, such as an AppCoordinator
+    let navigator = Navigator(rootScreen: Screens.rootScreen, viewFactory: MyViewFactory())
+
+    var body: some Scene {
+        WindowGroup {
+            RootScreen(currentScreen: .rootScreen)
+                .modifier(NavigatorViewBinding())
+                .environmentObject(navigator)
+                .task {
+                    // mimic a system event, such as a notification 
+                    
+                    // create an artificial delay after the app starts up
+                    await delay(6)
+                    
+                    // User navigates to different views, adding to the navStack
+                    
+                    // However far along the user is, this will pop to the first 
+                    // detailScreen with called id, or pop to the root screen
+                    navigator.popToDetailWithSpecificIdOrRoot(id: UUID(uuidString: "00000000-0000-0000-0000-000000000000"))
+                }
+        }
+    }
+}
+```
