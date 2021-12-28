@@ -43,7 +43,7 @@ public class Navigator<ScreenIdentifer: Hashable, ViewFactoryImpl: ViewFactory>:
     @ViewBuilder
     func nextView(from screen: ScreenIdentifer) -> some View {
         let nextScreen = calculateNextScreen(from: screen) as? ViewFactoryImpl.ScreenIdentifer
-        viewFactory.makeView(screen: .screenWrapper(nextScreen))
+        viewFactory.makeView(screenType: .screenWrapper(nextScreen))
     }
     
     public func navigate(to destinationScreen: ScreenIdentifer) {

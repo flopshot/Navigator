@@ -4,10 +4,10 @@
 
 import SwiftUI
 
-/// Connects all Navigation components of a Navigable screen View.
-/// Client app Views that conform to Navigable and add this Modifier
+/// Connects all Navigation components of a Screen View.
+/// Client app Views that conform to Screen and add this Modifier
 /// will then be able to call Navigation methods and programatically
-/// navigate between screens of their app, dynamically.
+/// navigate between Screen Views of their app, dynamically.
 public struct NavigationBinding<ViewFactoryImpl: ViewFactory, ScreenIdentifer: Hashable>: ViewModifier {
     let navigation: Navigator<ScreenIdentifer, ViewFactoryImpl>
     let currentScreen: ScreenIdentifer
@@ -29,8 +29,8 @@ public struct NavigationBinding<ViewFactoryImpl: ViewFactory, ScreenIdentifer: H
             .navigationBarTitle("", displayMode: .large)
             #endif
             .background(
-                // This is the hidden NavigationLink of every Navigable bound View
-                // which executes the native system View navigation
+                // This is the hidden NavigationLink of every Screen bound View
+                // which delegates navigation to the native SwiftUI View navigation
                 NavigationLink(
                     destination: navigation.nextView(from: currentScreen),
                     isActive: showNextScreenBinding
@@ -39,7 +39,7 @@ public struct NavigationBinding<ViewFactoryImpl: ViewFactory, ScreenIdentifer: H
                 })
             .onReceive(
                 // This relays the Navigation publisher associated with the underlying
-                // Navigable screen and updates the View's showNextScreenBinding to
+                // Screen and updates the View's showNextScreenBinding to
                 // either push or pop Views
                 navigation.navStack.first(where: { $0.key == currentScreen })!.value,
                 perform: { shouldShowNextScreen in
@@ -48,7 +48,7 @@ public struct NavigationBinding<ViewFactoryImpl: ViewFactory, ScreenIdentifer: H
             )
             .onChange(of: showNextScreenBinding.wrappedValue, perform: { shouldShow in
                 // If the user swipes to dismiss or clicks the NavigationBar back
-                // button, we will use this callback to update the Nav State in Navigation
+                // button, this callback will update the Nav State in Navigation
                 if !shouldShow { navigation.onDismiss(currentScreen) }
             })
     }

@@ -1,14 +1,18 @@
 # Navigator
 
+![swift v5.4](https://img.shields.io/badge/swift-v5.3-orange.svg)
+[![Platforms: iOS, macOS, watchOS](https://img.shields.io/badge/Platforms-macOS,%20iOS,%20watchOS-blue.svg?style=flat)](https://developer.apple.com/osx/)
+![deployment target iOS 14, macOS 11, watchOS 2](https://img.shields.io/badge/deployment%20target-iOS%2014,%20macOS%2011,%20watchOS%202-blueviolet)
+
 A navigation library that decouples Navigation logic in
 SwiftUI from the View and allows you to dynamically 
 navigate to other Views programatically in your app.
 
 ```swift
-struct DetailScreen: Navigable {
+struct DetailScreen: Screen {
     @EnvironmentObject var navigator: Navigator<Screens, MyViewFactory>    
     @State var showNextScreen: Bool = false
-    var currentScreen: Screen
+    var currentScreen: Screens
     
     var body: some View {
         Button("Next") {
@@ -36,15 +40,15 @@ enum Screens: Hashable {
 ```
 
 Then create a class that conforms to `ViewFactory` and 
-implement `makeView(screen:)` so that the given `Screens`
+implement `makeView(screenType:)` so that the given `Screens`
 enum returns the associated `View`.
 
 ```swift 
 class MyViewFactory: ViewFactory {
     
     @ViewBuilder
-    func makeView(screen: ScreenWrapper<Screens>) -> some View {
-        switch screen {
+    func makeView(screenType: ScreenWrapper<Screens>) -> some View {
+        switch screenType {
         case .screenWrapper(let myScreen):
             switch myScreen {
             case .rootScreen:
@@ -83,13 +87,13 @@ struct MyApp: App {
 }
 ```
 
-### 3. Conform app screens to Navigable
+### 3. Conform app screens to Screen
 
-For each top level view, conform them to `Navigable`
+For each top level view, conform them to `Screen`
 and apply the `bindNavigation(_:binding:)` view modifier
 
 ```swift
-struct RootScreen: Navigable {
+struct RootScreen: Screen {
     @EnvironmentObject var navigator: Navigator<Screens, MyViewFactory>    
     @State var showNextScreen: Bool = false
     var currentScreen = .rootScreen
@@ -107,7 +111,7 @@ struct RootScreen: Navigable {
 ``` 
 
 ```swift
-struct DetailScreen: Navigable {
+struct DetailScreen: Screen {
     @EnvironmentObject var navigator: Navigator<Screens, MyViewFactory>  
     @State var showNextScreen: Bool = false
     var currentScreen: Screens
@@ -147,11 +151,11 @@ enum Screens: Hashable {
 ### 4. Use the Navigator instance for navigation
 
 Now that all the setup is done, we can use the `Navigator`
-instance in the `Navigable` View to execute system level
+instance in the `Screen` View to execute system level
 View navigation
 
 ```swift
-struct RootScreen: Navigable {
+struct RootScreen: Screen {
     @EnvironmentObject var navigator: Navigator<Screens, MyViewFactory>
     @State var showNextScreen: Bool = false
     var currentScreen = .rootScreen
@@ -175,7 +179,7 @@ struct RootScreen: Navigable {
 ``` 
 
 ```swift
-struct DetailScreen: Navigable {
+struct DetailScreen: Screen {
     @EnvironmentObject var navigator: Navigator<Screens, MyViewFactory>    
     @State var showNextScreen: Bool = false
     var currentScreen: Screens

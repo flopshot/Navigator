@@ -5,31 +5,33 @@ import Combine
 import Foundation
 import SwiftUI
 
-/// For a View to opt into the Navigation library's system of
+/// For a View to opt into the Navigation library's
 /// dynamic navigation, a view mustconform to this protocol
-public protocol Navigable: View {
+public protocol Screen: View {
 
     /// Client app's implementation of a Hashable Screen type
     associatedtype ScreenIdentifier: Hashable
 
+    /// Client app's implementation of a a ViewFactory
     associatedtype ViewFactoryImpl: ViewFactory
 
-    /// Navigator instance to be initialized in the Navigable View
+    /// Navigator instance to be initialized in the Screen. Typicallly via a EnvironmentObject
     var navigator: Navigator<ScreenIdentifier, ViewFactoryImpl> { get }
     
     /// boolean used for the underlying NavigationLink.isActive binding
     var showNextScreen: Bool { get set }
     
-    /// The identifier of the current Navigable View screen
+    /// The identifier of the current Screen View. To be used to identify the View in
+    /// the library's navigation statck
     var currentScreen: ScreenIdentifier { get }
 }
 
-public extension View {
+public extension Screen {
     
-    /// Helper method to bind NavigationBindings modifier to current Navigable View.
-    /// Call this method to allow Navigable View to use Navigator property
+    /// Helper method to bind NavigationBindings modifier to current Screen View.
+    /// Call this method to allow Screen View to use Navigator property
     @inlinable
-    func bindNavigation<NV: Navigable>(
+    func bindNavigation<NV: Screen>(
         _ navigable: NV,
         binding showNextScreen: Binding<Bool>
     ) -> ModifiedContent<Self, NavigationBinding<NV.ViewFactoryImpl, NV.ScreenIdentifier>> {
