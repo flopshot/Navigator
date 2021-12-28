@@ -16,17 +16,20 @@ public protocol Navigation {
     /// along with its associated Boolean subject, which toggles the NavigationLink.isActive
     var navStack: OrderedDictionary<ScreenIdentifer, CurrentValueSubject<Bool, Never>> { get }
     
-    /// Triggers navigation to the next screen. Client app will call this to
-    /// immediately navigate to the next screen from the current screen
+    /// Triggers navigation to the next ScreenView. Client app will call this to
+    /// immediately navigate to the next ScreenView from the ScreenView
     func navigate(to screen: ScreenIdentifer)
     
-    /// Called when the current screen is about to be dismissed
-    /// used to update nav state
+    /// Called when the current ScreenView is about to be dismissed
+    /// used to update nav state.
     func onDismiss(_ screen: ScreenIdentifer)
     
-    /// Triggers dismissal of the current screen. Client app
-    /// will call this to immediately pop the screen
-    func dismissCurrent()
+    /// Triggers dismissal of the current ScreenView. Client app
+    /// will call this to immediately pop the ScreenView
+    func pop()
+
+    /// pops all views off the navigation statck to the root view with animation
+    func popToRoot()
 }
 
 public class Navigator<ScreenIdentifer: Hashable, ViewFactoryImpl: ViewFactory>: ObservableObject, Navigation {
@@ -54,15 +57,19 @@ public class Navigator<ScreenIdentifer: Hashable, ViewFactoryImpl: ViewFactory>:
         updateNavStateOnDismiss(screen)
     }
     
-    public func dismissCurrent() {
+    public func pop() {
         toggleNavigationLinkBindingFalse()
+    }
+
+    public func popToRoot() {
+        toggleRootScreenViewNavigationLinkBindingFalse()
     }
 }
 
 private extension Navigator {
     
     /// Once the bound NavigationLink.isActive is set to true, this method dynamically calculates
-    /// the next screen using the ViewFactory to map the next screen in the nav state to its View
+    /// the next ScreenView using the ViewFactory to map the next ScreenView in the nav state to its View
     func calculateNextScreen(from screen: ScreenIdentifer) -> ScreenIdentifer? {
         guard let currentScreenIdx = navStack.keys.firstIndex(where: { $0 == screen })
         else { return .none }
@@ -70,8 +77,8 @@ private extension Navigator {
         return navStack.keys.elements.item(at: nextScreenIdx)
     }
     
-    /// Whether the screen is dismissed by the library bindings or via external logic (swipe to go back/back button)
-    /// we remove the screen from the ordered disctionary in order to mainain the current nav state
+    /// Whether the ScreenView is dismissed by the library bindings or via external logic (swipe to go back/back button)
+    /// we remove the ScreenView from the ordered disctionary in order to mainain the current nav state
     func updateNavStateOnDismiss(_ screen: ScreenIdentifer) {
         if screen != navStack.keys.last {
             let parentIdx = navStack.keys.firstIndex(where: { $0 == screen})!
@@ -94,6 +101,12 @@ private extension Navigator {
         if let parentScreenId = navStack.keys.elements.item(at: navStack.keys.count - 2) {
             navStack.first(where: { $0.key == parentScreenId })!.value.send(false)
         }
+    }
+
+    /// Send the false flag to the root ScreenView's NavigationLink.isActive navigation binding
+    /// in order to dismiss all views in the navigation stack back to the root ScreenView
+    func toggleRootScreenViewNavigationLinkBindingFalse() {
+        navStack.elements[0].value.send(false)
     }
 }
 

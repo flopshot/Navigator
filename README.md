@@ -8,8 +8,20 @@ A navigation library that decouples Navigation logic in
 SwiftUI from the View and allows you to dynamically 
 navigate to other Views programatically in your app.
 
+* Uses native SwiftUI navigation
+* No custom 3rd party navigation
+* Retains Navigation back button 
+* Retains swipe-to-dismiss
+* Light weight, no wrapper views
+
+
+## Features
+1. **Navigation Stack**: Stores the state of SwiftUI navigation for your app
+2. **Dynamic Navigation**: Full programatic navigation at runtime. No static hardcoded view destinations necessary
+3. **Simple navigation APIs out of the box**: `navigate(to:)` `pop()` `popToRoot()`
+
 ```swift
-struct DetailScreen: Screen {
+struct DetailScreen: ScreenView {
     @EnvironmentObject var navigator: Navigator<Screens, MyViewFactory>    
     @State var showNextScreen: Bool = false
     var currentScreen: Screens
@@ -87,13 +99,13 @@ struct MyApp: App {
 }
 ```
 
-### 3. Conform app screens to Screen
+### 3. Conform app top level views to ScreenView
 
-For each top level view, conform them to `Screen`
+For each top level view, conform them to `ScreenView`
 and apply the `bindNavigation(_:binding:)` view modifier
 
 ```swift
-struct RootScreen: Screen {
+struct RootScreen: ScreenView {
     @EnvironmentObject var navigator: Navigator<Screens, MyViewFactory>    
     @State var showNextScreen: Bool = false
     var currentScreen = .rootScreen
@@ -111,7 +123,7 @@ struct RootScreen: Screen {
 ``` 
 
 ```swift
-struct DetailScreen: Screen {
+struct DetailScreen: ScreenView {
     @EnvironmentObject var navigator: Navigator<Screens, MyViewFactory>  
     @State var showNextScreen: Bool = false
     var currentScreen: Screens
@@ -151,11 +163,11 @@ enum Screens: Hashable {
 ### 4. Use the Navigator instance for navigation
 
 Now that all the setup is done, we can use the `Navigator`
-instance in the `Screen` View to execute system level
+instance in the `ScreenView` View to execute system level
 View navigation
 
 ```swift
-struct RootScreen: Screen {
+struct RootScreen: ScreenView {
     @EnvironmentObject var navigator: Navigator<Screens, MyViewFactory>
     @State var showNextScreen: Bool = false
     var currentScreen = .rootScreen
@@ -163,7 +175,7 @@ struct RootScreen: Screen {
     var body: some View {
         List {
             Button("Navigate to Deatil Screen") {
-                // Use navigate(to:) to navigate to another screen
+                // Use navigate(to:) to navigate to another ScreenView
                 
                 // This can be anywhere at the view level
                 
@@ -179,7 +191,7 @@ struct RootScreen: Screen {
 ``` 
 
 ```swift
-struct DetailScreen: Screen {
+struct DetailScreen: ScreenView {
     @EnvironmentObject var navigator: Navigator<Screens, MyViewFactory>    
     @State var showNextScreen: Bool = false
     var currentScreen: Screens
@@ -189,9 +201,9 @@ struct DetailScreen: Screen {
             Text("Here is some amazing detail.")
             
             Button("Go Back") {
-                // Use dismissCurrent() to navigate back
-                // to the previous view by popping the current
-                navigator.dismissCurrent()
+                // Use pop() to navigate back to the
+                // previous view by popping the current
+                navigator.pop()
             }
             .tint(.red)
             .buttonStyle(.borderedProminent)

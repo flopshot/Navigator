@@ -7,7 +7,7 @@ import SwiftUI
 
 /// For a View to opt into the Navigation library's
 /// dynamic navigation, a view mustconform to this protocol
-public protocol Screen: View {
+public protocol ScreenView: View {
 
     /// Client app's implementation of a Hashable Screen type
     associatedtype ScreenIdentifier: Hashable
@@ -26,12 +26,12 @@ public protocol Screen: View {
     var currentScreen: ScreenIdentifier { get }
 }
 
-public extension Screen {
+public extension ScreenView {
     
     /// Helper method to bind NavigationBindings modifier to current Screen View.
     /// Call this method to allow Screen View to use Navigator property
     @inlinable
-    func bindNavigation<NV: Screen>(
+    func bindNavigation<NV: ScreenView>(
         _ navigable: NV,
         binding showNextScreen: Binding<Bool>
     ) -> ModifiedContent<Self, NavigationBinding<NV.ViewFactoryImpl, NV.ScreenIdentifier>> {

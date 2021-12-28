@@ -4,10 +4,10 @@
 
 import SwiftUI
 
-/// Connects all Navigation components of a Screen View.
-/// Client app Views that conform to Screen and add this Modifier
+/// Connects all Navigation components of a ScreenView.
+/// Client app Views that conform to ScreenView and add this Modifier
 /// will then be able to call Navigation methods and programatically
-/// navigate between Screen Views of their app, dynamically.
+/// navigate between ScreenViews of their app, dynamically.
 public struct NavigationBinding<ViewFactoryImpl: ViewFactory, ScreenIdentifer: Hashable>: ViewModifier {
     let navigation: Navigator<ScreenIdentifer, ViewFactoryImpl>
     let currentScreen: ScreenIdentifer
@@ -29,7 +29,7 @@ public struct NavigationBinding<ViewFactoryImpl: ViewFactory, ScreenIdentifer: H
             .navigationBarTitle("", displayMode: .large)
             #endif
             .background(
-                // This is the hidden NavigationLink of every Screen bound View
+                // This is the hidden NavigationLink of every bound ScreenView
                 // which delegates navigation to the native SwiftUI View navigation
                 NavigationLink(
                     destination: navigation.nextView(from: currentScreen),
@@ -39,7 +39,7 @@ public struct NavigationBinding<ViewFactoryImpl: ViewFactory, ScreenIdentifer: H
                 })
             .onReceive(
                 // This relays the Navigation publisher associated with the underlying
-                // Screen and updates the View's showNextScreenBinding to
+                // ScreenView and updates the View's showNextScreenBinding to
                 // either push or pop Views
                 navigation.navStack.first(where: { $0.key == currentScreen })!.value,
                 perform: { shouldShowNextScreen in
@@ -54,7 +54,7 @@ public struct NavigationBinding<ViewFactoryImpl: ViewFactory, ScreenIdentifer: H
     }
 }
 
-/// Apply this ViewModifier to the root screen View
+/// Apply this ViewModifier to the root ScreenView
 /// of your app to be able to cal Navigation methods
 public struct NavigatorViewBinding: ViewModifier {
     
