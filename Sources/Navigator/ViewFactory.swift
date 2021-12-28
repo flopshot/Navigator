@@ -12,7 +12,7 @@ public protocol ViewFactory: AnyObject {
     
     /// Client app's concrete conformance of this method will map the ScreenType
     /// enum defined by the client app to it's associated SwiftUI View
-    @ViewBuilder func makeView(screen: ScreenWrapper<ScreenIdentifer>) -> Self.CreatedView
+    @ViewBuilder func makeView(screenType: ScreenWrapper<ScreenIdentifer>) -> Self.CreatedView
 }
 
 /// Used to wrap the client app's own defined enum
