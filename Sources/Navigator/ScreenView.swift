@@ -26,7 +26,7 @@ public protocol ScreenView: View {
     var currentScreen: ScreenIdentifier { get }
 }
 
-public extension ScreenView {
+public extension View {
     
     /// Helper method to bind NavigationBindings modifier to current Screen View.
     /// Call this method to allow Screen View to use Navigator property
