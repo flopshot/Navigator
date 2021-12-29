@@ -228,11 +228,11 @@ currently active in the NavigationView. Clients can use it to execte custom navi
     
 ```
 
-As an example, we can use it create an extention funtion on `Navigator` called `popToDetailWithSpecificIdOrRoot(id: UUID)`
+As an example, we can use it create an extention funtion on `Navigator` called `popToDetailWithSpecificIdOrRoot(id: String)`
 
 ```swift
 extension Navigator where ScreenIdentifer == Screens {
-    func popToDetailWithSpecificIdOrRoot(id: UUID) {
+    func popToDetailWithSpecificIdOrRoot(id: String) {
     
         // Since all screens that have been pushed onto the NavigationView
         // are stored in the navStack as keys, we can simply search through
@@ -290,14 +290,14 @@ struct MyApp: App {
                 .task {
                     // mimic a system event, such as a notification 
                     
-                    // create an artificial delay after the app starts up
-                    await delay(6)
+                    // create an artificial delay of 10 seconds after the app starts up
+                    try! await Task.sleep(nanoseconds: 10_000_000_000)
                     
                     // User navigates to different views, adding to the navStack
                     
                     // However far along the user is, this will pop to the first 
                     // detailScreen with called id, or pop to the root screen
-                    navigator.popToDetailWithSpecificIdOrRoot(id: UUID(uuidString: "00000000-0000-0000-0000-000000000000"))
+                    navigator.popToDetailWithSpecificIdOrRoot(id: "detail-123")
                 }
         }
     }
@@ -305,4 +305,4 @@ struct MyApp: App {
 ```
 
 ## Acknowledgements
-Thanks to [Obsured Pixels](https://github.com/obscured-pixels/abstracting-navigation-swiftui) excellent article, which inspired this library.
+Big thanks to [Obsured Pixels'](https://github.com/obscured-pixels/abstracting-navigation-swiftui) excellent article, which inspired this library.
