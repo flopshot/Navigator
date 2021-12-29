@@ -253,7 +253,7 @@ extension Navigator where ScreenIdentifer == Screens {
             // for that detailScreen
             let navigationIsActiveBinding = navStack[greenScreen]!
             
-            // When the send the false flag to the NavigationLink.isActive binding
+            // When then send the false flag to the NavigationLink.isActive binding
             // it will dismiss all views off the NavigationView stack to reveal
             // the detailScreen
             navigationIsActiveBinding.send(false)
@@ -303,3 +303,6 @@ struct MyApp: App {
     }
 }
 ```
+
+## Acknowledgements
+Thanks to [Obsured Pixels](https://github.com/obscured-pixels/abstracting-navigation-swiftui) excellent article, which inspired this library.
