@@ -5,6 +5,8 @@
 //  Created by Sean Najera on 1/2/22.
 //
 
+// NOTE: THE macOS TARGET IS IN THE EARLY EXPERIMENTAL STAGE AND IS NOT YET READY FOR USE
+
 import SwiftUI
 import Navigator
 
