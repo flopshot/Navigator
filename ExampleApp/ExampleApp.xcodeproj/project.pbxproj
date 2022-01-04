@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		55D0182C27828C5A00E6ACF6 /* ExampleAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D0181C27828C5800E6ACF6 /* ExampleAppApp.swift */; };
-		55D0182D27828C5A00E6ACF6 /* ExampleAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D0181C27828C5800E6ACF6 /* ExampleAppApp.swift */; };
+		55D0182C27828C5A00E6ACF6 /* ExampleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D0181C27828C5800E6ACF6 /* ExampleApp.swift */; };
+		55D0182D27828C5A00E6ACF6 /* ExampleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D0181C27828C5800E6ACF6 /* ExampleApp.swift */; };
 		55D0182E27828C5A00E6ACF6 /* RootScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D0181D27828C5800E6ACF6 /* RootScreen.swift */; };
 		55D0182F27828C5A00E6ACF6 /* RootScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D0181D27828C5800E6ACF6 /* RootScreen.swift */; };
 		55D0183027828C5A00E6ACF6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55D0181E27828C5A00E6ACF6 /* Assets.xcassets */; };
@@ -24,7 +24,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		55D0181C27828C5800E6ACF6 /* ExampleAppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleAppApp.swift; sourceTree = "<group>"; };
+		55D0181C27828C5800E6ACF6 /* ExampleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleApp.swift; sourceTree = "<group>"; };
 		55D0181D27828C5800E6ACF6 /* RootScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootScreen.swift; sourceTree = "<group>"; };
 		55D0181E27828C5A00E6ACF6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		55D0182327828C5A00E6ACF6 /* ExampleApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ExampleApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -70,7 +70,7 @@
 		55D0181B27828C5800E6ACF6 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
-				55D0181C27828C5800E6ACF6 /* ExampleAppApp.swift */,
+				55D0181C27828C5800E6ACF6 /* ExampleApp.swift */,
 				55D0181D27828C5800E6ACF6 /* RootScreen.swift */,
 				55D0184127828CEA00E6ACF6 /* DiveScreens.swift */,
 				55D0184427828D0000E6ACF6 /* MyViewFactory.swift */,
@@ -219,7 +219,7 @@
 				55D0184227828CEA00E6ACF6 /* DiveScreens.swift in Sources */,
 				55D0182E27828C5A00E6ACF6 /* RootScreen.swift in Sources */,
 				55D0184827828D1000E6ACF6 /* Util.swift in Sources */,
-				55D0182C27828C5A00E6ACF6 /* ExampleAppApp.swift in Sources */,
+				55D0182C27828C5A00E6ACF6 /* ExampleApp.swift in Sources */,
 				55D0184527828D0000E6ACF6 /* MyViewFactory.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -231,7 +231,7 @@
 				55D0184327828CEA00E6ACF6 /* DiveScreens.swift in Sources */,
 				55D0182F27828C5A00E6ACF6 /* RootScreen.swift in Sources */,
 				55D0184927828D1000E6ACF6 /* Util.swift in Sources */,
-				55D0182D27828C5A00E6ACF6 /* ExampleAppApp.swift in Sources */,
+				55D0182D27828C5A00E6ACF6 /* ExampleApp.swift in Sources */,
 				55D0184627828D0000E6ACF6 /* MyViewFactory.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

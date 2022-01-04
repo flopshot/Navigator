@@ -20,12 +20,14 @@ struct GreenScreen: ScreenView {
             navigator.navigate(to: randomScreen())
         }
 
-        if #available(macOS 12.0, iOS 15.0, *) {
+        if #available(macOS 12.0, iOS 15.0, watchOS 8.0, *) {
             nextButton
                 .tint(.green)
                 .buttonStyle(.borderedProminent)
                 .buttonBorderShape(.automatic)
+                #if os(macOS) || os(iOS)
                 .controlSize(.large)
+                #endif
                 .navigationTitle("Green Screen")
                 .bindNavigation(self, binding: $showNextScreen)
         } else {
@@ -52,20 +54,24 @@ struct BlueScreen: ScreenView {
             navigator.pop()
         }
 
-        if #available(macOS 12.0, iOS 15.0, *) {
+        if #available(macOS 12.0, iOS 15.0, watchOS 8.0, *) {
             VStack(spacing: 32) {
                 nextButton
                     .tint(.blue)
                     .buttonStyle(.borderedProminent)
                     .buttonBorderShape(.automatic)
+                    #if os(macOS) || os(iOS)
                     .controlSize(.large)
+                    #endif
 
 
                 dismissButton
                     .tint(.blue)
                     .buttonStyle(.borderedProminent)
                     .buttonBorderShape(.automatic)
+                    #if os(macOS) || os(iOS)
                     .controlSize(.large)
+                    #endif
             }
             .navigationTitle("Blue Screen")
             .bindNavigation(self, binding: $showNextScreen)

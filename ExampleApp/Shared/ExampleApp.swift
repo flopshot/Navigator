@@ -22,7 +22,7 @@ struct NavigatorDemoApp: App {
                 .modifier(NavigatorViewBinding())
                 .environmentObject(navigator)
 
-            if #available(macOS 12.0, iOS 15.0, *) {
+            if #available(macOS 12.0, iOS 15.0, watchOS 8.0, *) {
                 rootView
                     .task {
                         await delay(8)
