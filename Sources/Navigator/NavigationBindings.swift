@@ -36,7 +36,7 @@ public struct NavigationBinding<ViewFactoryImpl: ViewFactory, ScreenIdentifer: H
                     isActive: showNextScreenBinding
                 ) {
                     EmptyView()
-                })
+                }.hidden())
             .onReceive(
                 // This relays the Navigation publisher associated with the underlying
                 // ScreenView and updates the View's showNextScreenBinding to

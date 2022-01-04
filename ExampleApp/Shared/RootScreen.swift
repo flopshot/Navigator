@@ -21,9 +21,6 @@ struct RootScreen: ScreenView {
             }
         }
         .navigationTitle("Root Screen")
-        #if os(macOS)
-        .listStyle(SidebarListStyle())
-        #endif
         .bindNavigation(self, binding: $showNextScreen)
     }
 }

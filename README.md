@@ -2,7 +2,7 @@
 
 ![swift v5.5](https://img.shields.io/badge/swift-v5.5-orange.svg)
 [![Platforms: iOS, watchOS](https://img.shields.io/badge/Platforms-iOS,%20watchOS-blue.svg?style=flat)](https://developer.apple.com/osx/)
-![deployment target iOS 14, watchOS 2](https://img.shields.io/badge/deployment%20target-iOS%2014,%20watchOS%202-blueviolet)
+![deployment target iOS 14, watchOS 7](https://img.shields.io/badge/deployment%20target-iOS%2014,%20watchOS%207-blueviolet)
 
 A navigation library that decouples Navigation logic in
 SwiftUI from the View and allows you to dynamically 

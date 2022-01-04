@@ -20,6 +20,8 @@ struct GreenScreen: ScreenView {
             navigator.navigate(to: randomScreen())
         }
 
+
+        // Custom Styling Based on OS Version
         if #available(macOS 12.0, iOS 15.0, watchOS 8.0, *) {
             nextButton
                 .tint(.green)
@@ -54,6 +56,8 @@ struct BlueScreen: ScreenView {
             navigator.pop()
         }
 
+
+        // Custom Styling Based on OS Version
         if #available(macOS 12.0, iOS 15.0, watchOS 8.0, *) {
             VStack(spacing: 32) {
                 nextButton
