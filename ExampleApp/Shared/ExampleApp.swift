@@ -34,7 +34,7 @@ struct NavigatorDemoApp: App {
                     // navigator.popToFirstGreenScreenOrRoot(id: UUID(uuidString: "d59bb9c3-f026-4890-b612-2dfa78bf6402")!)
 
                     // Uncomment to test programatic stack building
-                     await navigator.navigateWith(stack: .blueScreen(), .greenScreen(), .blueScreen())
+                    // await navigator.navigateWith(stack: .blueScreen(), .greenScreen(), .blueScreen())
                 }
                 #endif
         }

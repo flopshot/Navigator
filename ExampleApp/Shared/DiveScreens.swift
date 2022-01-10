@@ -20,17 +20,17 @@ struct GreenScreen: ScreenView {
         .overlay(
             ScrollView {
                 VStack(spacing: 32) {
-                    Button("Blue Screen") {
+                    Button("To Blue Screen") {
                         navigator.navigate(to: .blueScreen())
                     }
                     .buttonStyling(color: .blue)
 
-                    Button("Green Screen") {
+                    Button("To Green Screen") {
                         navigator.navigate(to: .greenScreen())
                     }
                     .buttonStyling(color: .green)
 
-                    Button("Random Screen") {
+                    Button("To a Random Screen") {
                         navigator.navigate(to: randomScreen())
                     }
                     .buttonStyling(color: .purple)
@@ -62,17 +62,17 @@ struct BlueScreen: ScreenView {
         .overlay(
             ScrollView {
                 VStack(spacing: 32) {
-                    Button("Blue Screen") {
+                    Button("To Blue Screen") {
                         navigator.navigate(to: .blueScreen())
                     }
                     .buttonStyling(color: .blue)
 
-                    Button("Green Screen") {
+                    Button("To Green Screen") {
                         navigator.navigate(to: .greenScreen())
                     }
                     .buttonStyling(color: .green)
 
-                    Button("Random Screen") {
+                    Button("To a Random Screen") {
                         navigator.navigate(to: randomScreen())
                     }
                     .buttonStyling(color: .purple)
