@@ -15,6 +15,9 @@ navigate to other Views programatically in your app.
 * Light weight, no wrapper views
 
 
+https://user-images.githubusercontent.com/7854840/148708668-dcdf23d2-6c27-40b8-8ef3-0fd05265d342.mov
+
+
 ## Features
 1. **Navigation Stack**: Stores the state of SwiftUI navigation for your app
 2. **Dynamic Navigation**: Full programatic navigation at runtime. No static hardcoded view destinations necessary
