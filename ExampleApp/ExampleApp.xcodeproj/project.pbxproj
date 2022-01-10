@@ -21,6 +21,7 @@
 		553915142784DF76008BF455 /* DiveScreens.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D0184127828CEA00E6ACF6 /* DiveScreens.swift */; };
 		553915152784DF79008BF455 /* MyViewFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D0184427828D0000E6ACF6 /* MyViewFactory.swift */; };
 		553915162784DF7C008BF455 /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D0184727828D1000E6ACF6 /* Util.swift */; };
+		5591A10E278A4F6400C98419 /* AsyncCompatibilityKit in Frameworks */ = {isa = PBXBuildFile; productRef = 5591A10D278A4F6400C98419 /* AsyncCompatibilityKit */; };
 		55D0182C27828C5A00E6ACF6 /* ExampleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D0181C27828C5800E6ACF6 /* ExampleApp.swift */; };
 		55D0182D27828C5A00E6ACF6 /* ExampleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D0181C27828C5800E6ACF6 /* ExampleApp.swift */; };
 		55D0182E27828C5A00E6ACF6 /* RootScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D0181D27828C5800E6ACF6 /* RootScreen.swift */; };
@@ -117,6 +118,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				55D0183E27828C9300E6ACF6 /* Navigator in Frameworks */,
+				5591A10E278A4F6400C98419 /* AsyncCompatibilityKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -294,6 +296,7 @@
 			name = "ExampleApp (iOS)";
 			packageProductDependencies = (
 				55D0183D27828C9300E6ACF6 /* Navigator */,
+				5591A10D278A4F6400C98419 /* AsyncCompatibilityKit */,
 			);
 			productName = "ExampleApp (iOS)";
 			productReference = 55D0182327828C5A00E6ACF6 /* ExampleApp.app */;
@@ -355,6 +358,9 @@
 				Base,
 			);
 			mainGroup = 55D0181627828C5800E6ACF6;
+			packageReferences = (
+				5591A10C278A4F6400C98419 /* XCRemoteSwiftPackageReference "AsyncCompatibilityKit" */,
+			);
 			productRefGroup = 55D0182427828C5A00E6ACF6 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -729,6 +735,7 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
@@ -758,6 +765,7 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
@@ -887,10 +895,26 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCRemoteSwiftPackageReference section */
+		5591A10C278A4F6400C98419 /* XCRemoteSwiftPackageReference "AsyncCompatibilityKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/JohnSundell/AsyncCompatibilityKit.git";
+			requirement = {
+				kind = exactVersion;
+				version = 0.1.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
 		553915102784DF62008BF455 /* Navigator */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Navigator;
+		};
+		5591A10D278A4F6400C98419 /* AsyncCompatibilityKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5591A10C278A4F6400C98419 /* XCRemoteSwiftPackageReference "AsyncCompatibilityKit" */;
+			productName = AsyncCompatibilityKit;
 		};
 		55D0183D27828C9300E6ACF6 /* Navigator */ = {
 			isa = XCSwiftPackageProductDependency;

@@ -36,29 +36,34 @@ extension Navigator where ScreenIdentifer == Screens {
     }
 }
 
-/// https://stackoverflow.com/a/64495887/7238475
-struct ViewDidLoadModifier: ViewModifier {
+public struct ButtonColoring: ViewModifier {
 
-    @State private var didLoad = false
-    private let action: (() -> Void)?
+    let color: Color
 
-    init(perform action: (() -> Void)? = nil) {
-        self.action = action
+    public init(color: Color) {
+        self.color = color
     }
 
-    func body(content: Content) -> some View {
-        content.onAppear {
-            if didLoad == false {
-                didLoad = true
-                action?()
-            }
+    public func body(content: Content) -> some View {
+        if #available(macOS 12.0, iOS 15.0, watchOS 8.0, *) {
+            content
+                .tint(color)
+                .buttonStyle(.borderedProminent)
+                .buttonBorderShape(.automatic)
+                #if os(macOS) || os(iOS)
+                .controlSize(.large)
+                #endif
+        } else {
+            content
+                .foregroundColor(color)
         }
     }
 }
 
-extension View {
+public extension View {
 
-    func onLoad(perform action: (() -> Void)? = nil) -> some View {
-        modifier(ViewDidLoadModifier(perform: action))
+    @inlinable
+    func buttonStyling(color: Color) -> some View {
+        modifier(ButtonColoring(color: color))
     }
 }

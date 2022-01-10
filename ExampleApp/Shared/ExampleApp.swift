@@ -9,6 +9,9 @@
 
 import SwiftUI
 import Navigator
+#if os(iOS)
+import AsyncCompatibilityKit
+#endif
 
 @main
 struct NavigatorDemoApp: App {
@@ -18,24 +21,24 @@ struct NavigatorDemoApp: App {
 
             let navigator = Navigator(rootScreen: Screens.rootScreen, viewFactory: MyViewFactory())
 
-            let rootView = RootScreen(currentScreen: .rootScreen)
+            RootScreen(currentScreen: .rootScreen)
                 .modifier(NavigatorViewBinding())
+                .accentColor(.black)
+                .navigationViewStyle(.stack)
                 .environmentObject(navigator)
+                #if os(iOS)
+                .task {
 
-            if #available(macOS 12.0, iOS 15.0, watchOS 8.0, *) {
-                rootView
-                    .task {
-                        await delay(8)
-                        navigator.popToFirstGreenScreenOrRoot(id: UUID(uuidString: "d59bb9c3-f026-4890-b612-2dfa78bf6402")!)
-                    }
-            } else {
-                rootView
-                    .onLoad {
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 8) {
-                            navigator.popToFirstGreenScreenOrRoot(id: UUID(uuidString: "d59bb9c3-f026-4890-b612-2dfa78bf6402")!)
-                        }
-                    }
-            }
+                    // Uncomment to test programatic view dismissal
+                    // await delay(5)
+                    // navigator.popToFirstGreenScreenOrRoot(id: UUID(uuidString: "d59bb9c3-f026-4890-b612-2dfa78bf6402")!)
+
+                    // Uncomment to test programatic stack building
+                     await navigator.navigateWith(stack: .blueScreen(), .greenScreen(), .blueScreen())
+                }
+                #endif
         }
     }
 }
+
+

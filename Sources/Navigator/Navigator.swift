@@ -6,6 +6,7 @@ import Combine
 import OrderedCollections
 import SwiftUI
 
+@MainActor
 public protocol Navigation {
     associatedtype ScreenIdentifer: Hashable
     associatedtype ViewFactoryImpl: ViewFactory
@@ -16,9 +17,12 @@ public protocol Navigation {
     /// along with its associated Boolean subject, which toggles the NavigationLink.isActive
     var navStack: OrderedDictionary<ScreenIdentifer, CurrentValueSubject<Bool, Never>> { get }
     
-    /// Triggers navigation to the next ScreenView. Client app will call this to
-    /// immediately navigate to the next ScreenView from the ScreenView
+    /// Pushes to the next ScreenView, on the NavigationView
     func navigate(to screen: ScreenIdentifer)
+
+    /// Adds ScreenViews to the the NavigationView stack, with the final
+    /// ScreenIdentifier denoting the top most visible ScreenView
+    func navigateWith(stack: ScreenIdentifer...) async
     
     /// Called when the current ScreenView is about to be dismissed
     /// used to update nav state.
@@ -63,6 +67,16 @@ public class Navigator<ScreenIdentifer: Hashable, ViewFactoryImpl: ViewFactory>:
 
     public func popToRoot() {
         toggleRootScreenViewNavigationLinkBindingFalse()
+    }
+
+    public func navigateWith(stack: ScreenIdentifer...) async {
+        for (idx, screen) in stack.enumerated() {
+            navigate(to: screen)
+
+            if idx < stack.count - 1 {
+                try! await Task.sleep(nanoseconds: 700_000_000)
+            }
+        }
     }
 }
 

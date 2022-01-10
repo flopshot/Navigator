@@ -16,9 +16,15 @@ struct RootScreen: ScreenView {
 
     var body: some View {
         List {
-            Button("Next") {
+            Button("Blue Screen") {
                 navigator.navigate(to: .blueScreen())
             }
+            .foregroundColor(.blue)
+
+            Button("Green Screen") {
+                navigator.navigate(to: .greenScreen())
+            }
+            .foregroundColor(.green)
         }
         .navigationTitle("Root Screen")
         .bindNavigation(self, binding: $showNextScreen)
@@ -27,12 +33,14 @@ struct RootScreen: ScreenView {
 
 struct RootView_Preview: PreviewProvider {
     static var previews: some View {
-        RootScreen(currentScreen: .rootScreen)
-            .environmentObject(
-                Navigator(
-                    rootScreen: Screens.rootScreen,
-                    viewFactory: MyViewFactory()
+        NavigationView {
+            RootScreen(currentScreen: .rootScreen)
+                .environmentObject(
+                    Navigator(
+                        rootScreen: Screens.rootScreen,
+                        viewFactory: MyViewFactory()
+                    )
                 )
-            )
+        }
     }
 }

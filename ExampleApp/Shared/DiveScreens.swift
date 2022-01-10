@@ -15,28 +15,37 @@ struct GreenScreen: ScreenView {
     var currentScreen: Screens
 
     var body: some View {
+        Color.green
+        .ignoresSafeArea()
+        .overlay(
+            ScrollView {
+                VStack(spacing: 32) {
+                    Button("Blue Screen") {
+                        navigator.navigate(to: .blueScreen())
+                    }
+                    .buttonStyling(color: .blue)
 
-        let nextButton = Button("Next") {
-            navigator.navigate(to: randomScreen())
-        }
+                    Button("Green Screen") {
+                        navigator.navigate(to: .greenScreen())
+                    }
+                    .buttonStyling(color: .green)
 
+                    Button("Random Screen") {
+                        navigator.navigate(to: randomScreen())
+                    }
+                    .buttonStyling(color: .purple)
 
-        // Custom Styling Based on OS Version
-        if #available(macOS 12.0, iOS 15.0, watchOS 8.0, *) {
-            nextButton
-                .tint(.green)
-                .buttonStyle(.borderedProminent)
-                .buttonBorderShape(.automatic)
-                #if os(macOS) || os(iOS)
-                .controlSize(.large)
-                #endif
-                .navigationTitle("Green Screen")
-                .bindNavigation(self, binding: $showNextScreen)
-        } else {
-            nextButton
-                .navigationTitle("Green Screen")
-                .bindNavigation(self, binding: $showNextScreen)
-        }
+                    Button("Pop To Root") {
+                        navigator.popToRoot()
+                    }
+                    .buttonStyling(color: .red)
+                }
+                .padding()
+                .background(Color.white)
+            }
+        )
+        .navigationTitle("Green Screen")
+        .bindNavigation(self, binding: $showNextScreen)
     }
 }
 
@@ -48,46 +57,37 @@ struct BlueScreen: ScreenView {
 
     var body: some View {
 
-        let nextButton = Button("Next") {
-            navigator.navigate(to: randomScreen())
-        }
+        Color.blue
+        .ignoresSafeArea()
+        .overlay(
+            ScrollView {
+                VStack(spacing: 32) {
+                    Button("Blue Screen") {
+                        navigator.navigate(to: .blueScreen())
+                    }
+                    .buttonStyling(color: .blue)
 
-        let dismissButton = Button("Dismiss") {
-            navigator.pop()
-        }
+                    Button("Green Screen") {
+                        navigator.navigate(to: .greenScreen())
+                    }
+                    .buttonStyling(color: .green)
 
+                    Button("Random Screen") {
+                        navigator.navigate(to: randomScreen())
+                    }
+                    .buttonStyling(color: .purple)
 
-        // Custom Styling Based on OS Version
-        if #available(macOS 12.0, iOS 15.0, watchOS 8.0, *) {
-            VStack(spacing: 32) {
-                nextButton
-                    .tint(.blue)
-                    .buttonStyle(.borderedProminent)
-                    .buttonBorderShape(.automatic)
-                    #if os(macOS) || os(iOS)
-                    .controlSize(.large)
-                    #endif
-
-
-                dismissButton
-                    .tint(.blue)
-                    .buttonStyle(.borderedProminent)
-                    .buttonBorderShape(.automatic)
-                    #if os(macOS) || os(iOS)
-                    .controlSize(.large)
-                    #endif
+                    Button("Pop") {
+                        navigator.pop()
+                    }
+                    .buttonStyling(color: .red)
+                }
+                .padding()
+                .background(Color.white)
             }
-            .navigationTitle("Blue Screen")
-            .bindNavigation(self, binding: $showNextScreen)
-        } else {
-            VStack(spacing: 32) {
-                nextButton
-
-                dismissButton
-            }
-            .navigationTitle("Blue Screen")
-            .bindNavigation(self, binding: $showNextScreen)
-        }
+        )
+        .navigationTitle("Blue Screen")
+        .bindNavigation(self, binding: $showNextScreen)
     }
 }
 
