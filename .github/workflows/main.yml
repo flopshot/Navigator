@@ -1,0 +1,20 @@
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch.
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+# We're only going to have one job, `test` but you can add this
+jobs:
+  test:
+    runs-on: macOS-latest
+    steps:
+        # Checkout the code to the working directory
+      - uses: actions/checkout@v2
+      # Install xcbeautify so the logs are human-friendly
+      - name: install xcbeautify
+        run: brew install xcbeautify
+        # Run the tests
+      - name: Run the xcode tests
+        run: xcodebuild clean test -project ExampleApp.xcodeproj -scheme NavigatorUITests -destination "platform=iOS Simulator,name=iPhone 12" | xcbeautify
