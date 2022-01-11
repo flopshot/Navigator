@@ -24,7 +24,6 @@ struct NavigatorDemoApp: App {
             RootScreen(currentScreen: .rootScreen)
                 .modifier(NavigatorViewBinding())
                 .accentColor(.black)
-                .navigationViewStyle(.stack)
                 .environmentObject(navigator)
                 #if os(iOS)
                 .task {
