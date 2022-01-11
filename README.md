@@ -1,5 +1,6 @@
 # Navigator
 
+![main workflow](https://github.com/flopshot/Navigator/actions/workflows/main.yml/badge.svg)
 ![swift v5.5](https://img.shields.io/badge/swift-v5.5-orange.svg)
 [![Platforms: iOS, watchOS](https://img.shields.io/badge/Platforms-iOS,%20watchOS-blue.svg?style=flat)](https://developer.apple.com/osx/)
 ![deployment target iOS 14, watchOS 7](https://img.shields.io/badge/deployment%20target-iOS%2014,%20watchOS%207-blueviolet)
