@@ -16,10 +16,6 @@ jobs:
         # Checkout the code to the working directory
       - uses: actions/checkout@v2
 
-        # Install xcbeautify so the logs are human-friendly
-      # - name: install xcbeautify
-      #  run: brew install xcbeautify
-
         # Ensure that Xcode 13 is used for this workflow
       - name: Force Xcode 13
         run: sudo xcode-select -switch /Applications/Xcode_13.2.1.app
