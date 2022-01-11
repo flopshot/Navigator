@@ -256,8 +256,8 @@ extension Navigator where ScreenIdentifer == Screens {
             // for that detailScreen
             let navigationIsActiveBinding = navStack[greenScreen]!
             
-            // When then send the false flag to the NavigationLink.isActive binding
-            // it will dismiss all views off the NavigationView stack to reveal
+            // Sending the false flag to the NavigationLink.isActive binding
+            // will dismiss all views off the NavigationView stack to reveal
             // the detailScreen
             navigationIsActiveBinding.send(false)
         } else {

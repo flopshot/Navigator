@@ -1,0 +1,25 @@
+name: Navigator CI
+
+
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch.
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+# We're only going to have one job, `test` but you can add this
+jobs:
+  test:
+    runs-on: macOS-latest
+    steps:
+        # Checkout the code to the working directory
+      - uses: actions/checkout@v2
+
+        # Ensure that Xcode 13 is used for this workflow
+      - name: Force Xcode 13
+        run: sudo xcode-select -switch /Applications/Xcode_13.2.1.app
+
+      # Run the tests
+      - name: Run the xcode tests
+        run: xcodebuild clean test -project ./ExampleApp/ExampleApp.xcodeproj -scheme NavigatorUITests -destination "platform=iOS Simulator,name=iPhone 13,OS=latest"
