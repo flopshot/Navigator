@@ -24,7 +24,7 @@ class NavigatorUITestsLaunchTests: XCTestCase {
 
     func testNavigationScreen() {
 
-        let rootScreenText = app.staticTexts["Roots Screen"]
+        let rootScreenText = app.staticTexts["Root Screen"]
         XCTAssert(rootScreenText.exists)
 
         let greenButton = app.buttons["Green Screen"]
