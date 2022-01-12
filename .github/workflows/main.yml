@@ -1,8 +1,8 @@
-name: Navigator CI
+name: Tests
 
 
 on:
-  # Triggers the workflow on push or pull request events but only for the main branch.
+  # Triggers the workflow on push events but only for the main branch.
   push:
     branches: [ main ]
   pull_request:
@@ -10,16 +10,37 @@ on:
 
 # We're only going to have one job, `test` but you can add this
 jobs:
-  test:
+  xcode-test:
+    name: "Xcode Tests"
     runs-on: macOS-latest
+
+    strategy:
+      matrix:
+        platform: [iOS]
+        include:
+          - platform: iOS
+            sdk: iphonesimulator
+            destination: "name=iPhone 13"
+
     steps:
-        # Checkout the code to the working directory
+      # Checkout the code to the working directory
       - uses: actions/checkout@v2
 
-        # Ensure that Xcode 13 is used for this workflow
+      # Ensure that Xcode 13 is used for this workflow
       - name: Force Xcode 13
         run: sudo xcode-select -switch /Applications/Xcode_13.2.1.app
 
       # Run the tests
-      - name: Run the xcode tests
-        run: xcodebuild clean test -project ./ExampleApp/ExampleApp.xcodeproj -scheme NavigatorUITests -destination "platform=iOS Simulator,name=iPhone 13,OS=latest"
+      - name: Xcodebuild Action
+        uses: sersoft-gmbh/xcodebuild-action@v2
+        with:
+          action: test
+          project: ./ExampleApp/ExampleApp.xcodeproj
+          target: Navigator
+          sdk: ${{ matrix.sdk }}
+          destination: "${{ matrix.destination }}"
+          enable-code-coverage: true
+
+      # Send Coverage data to Codecov
+      - name: Upload Coverage to CodeCov
+        uses: codecov/codecov-action@v2
