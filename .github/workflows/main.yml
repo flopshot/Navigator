@@ -14,14 +14,6 @@ jobs:
     name: "Xcode Tests"
     runs-on: macOS-latest
 
-    strategy:
-      matrix:
-        platform: [iOS]
-        include:
-          - platform: iOS
-            sdk: iphonesimulator
-            destination: "name=iPhone 13"
-
     steps:
       # Checkout the code to the working directory
       - uses: actions/checkout@v2
@@ -31,15 +23,14 @@ jobs:
         run: sudo xcode-select -switch /Applications/Xcode_13.2.1.app
 
       # Run the tests
+      - name: Run the xcode tests
+      run: xcodebuild clean test -project ./ExampleApp/ExampleApp.xcodeproj -scheme NavigatorUITests -destination "platform=iOS Simulator,name=iPhone 13,OS=latest"
+
+      # Process the coverage files to only send Navigator coverage
       - name: Xcodebuild Action
         uses: sersoft-gmbh/swift-coverage-action@v2
         with:
-          action: test
-          project: ./ExampleApp/ExampleApp.xcodeproj
-          target: Navigator
-          sdk: ${{ matrix.sdk }}
-          destination: "${{ matrix.destination }}"
-          enable-code-coverage: true
+          target-name-filter: Navigator
 
       # Send Coverage data to Codecov
       - name: Upload Coverage to CodeCov
