@@ -32,7 +32,7 @@ jobs:
 
       # Run the tests
       - name: Xcodebuild Action
-        uses: sersoft-gmbh/xcodebuild-action@v2
+        uses: sersoft-gmbh/swift-coverage-action@v2
         with:
           action: test
           project: ./ExampleApp/ExampleApp.xcodeproj
