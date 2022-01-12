@@ -24,7 +24,7 @@ jobs:
 
       # Run the tests
       - name: Run the xcode tests
-      run: xcodebuild clean test -project ./ExampleApp/ExampleApp.xcodeproj -scheme NavigatorUITests -destination "platform=iOS Simulator,name=iPhone 13,OS=latest"
+        run: xcodebuild clean test -project ./ExampleApp/ExampleApp.xcodeproj -scheme NavigatorUITests -destination "platform=iOS Simulator,name=iPhone 13,OS=latest"
 
       # Process the coverage files to only send Navigator coverage
       - name: Xcodebuild Action
