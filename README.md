@@ -1,6 +1,6 @@
 # Navigator
 
-![main workflow](https://github.com/flopshot/Navigator/actions/workflows/main.yml/badge.svg)
+![ci workflow](https://github.com/flopshot/Navigator/actions/workflows/main.yml/badge.svg)
 ![swift v5.5](https://img.shields.io/badge/swift-v5.5-orange.svg)
 [![Platforms: iOS, watchOS](https://img.shields.io/badge/Platforms-iOS,%20watchOS-blue.svg?style=flat)](https://developer.apple.com/osx/)
 ![deployment target iOS 14, watchOS 7](https://img.shields.io/badge/deployment%20target-iOS%2014,%20watchOS%207-blueviolet)
@@ -15,9 +15,7 @@ navigate to other Views programatically in your app.
 * Retains swipe-to-dismiss
 * Light weight, no wrapper views
 
-
-https://user-images.githubusercontent.com/7854840/148708668-dcdf23d2-6c27-40b8-8ef3-0fd05265d342.mov
-
+<img src="https://user-images.githubusercontent.com/7854840/149345462-b12124bb-dd80-42f0-b222-e49cf91b87d4.gif" width="240">
 
 ## Features
 1. **Navigation Stack**: Stores the state of SwiftUI navigation for your app
@@ -255,12 +253,12 @@ extension Navigator where ScreenIdentifer == Screens {
             // on the found detailScreen to return the Combine subject
             // that controls the NavigationLink.isActive binding
             // for that detailScreen
-            let navigationIsActiveBinding = navStack[greenScreen]!
+            let detailScreenIsActiveBinding = navStack[detailScreen]!
             
             // Sending the false flag to the NavigationLink.isActive binding
             // will dismiss all views off the NavigationView stack to reveal
             // the detailScreen
-            navigationIsActiveBinding.send(false)
+            detailScreenIsActiveBinding.send(false)
         } else {
         
             // if the detail screen is not found in the current stack
