@@ -21,21 +21,23 @@ struct NavigatorDemoApp: App {
 
             let navigator = Navigator(rootScreen: Screens.rootScreen, viewFactory: MyViewFactory())
 
-            RootScreen(currentScreen: .rootScreen)
-                .modifier(NavigatorViewBinding())
-                .accentColor(.black)
-                .environmentObject(navigator)
-                #if os(iOS)
-                .task {
+            NavigationView.with(navigator) {
+                RootScreen(currentScreen: .rootScreen)
+            }
+            .accentColor(.black)
 
-                    // Uncomment to test programatic view dismissal
-                    // await delay(5)
-                    // navigator.popToFirstGreenScreenOrRoot(id: UUID(uuidString: "d59bb9c3-f026-4890-b612-2dfa78bf6402")!)
+            #if os(iOS)
+            .navigationViewStyle(.stack)
+            .task {
 
-                    // Uncomment to test programatic stack building
-                    // await navigator.navigateWith(stack: .blueScreen(), .greenScreen(), .blueScreen())
-                }
-                #endif
+                // Uncomment to test programatic view dismissal
+                //   await delay(5)
+                //   navigator.popToFirstGreenScreenOrRoot(id: UUID(uuidString: "d59bb9c3-f026-4890-b612-2dfa78bf6402")!)
+
+                // Uncomment to test programatic stack building
+                //   await navigator.navigateWith(stack: .blueScreen(), .greenScreen(), .blueScreen())
+            }
+            #endif
         }
     }
 }

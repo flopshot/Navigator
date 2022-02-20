@@ -27,7 +27,7 @@ public protocol ScreenView: View {
 }
 
 public extension View {
-    
+
     /// Helper method to bind NavigationBindings modifier to current Screen View.
     /// Call this method to allow Screen View to use Navigator property
     @inlinable
