@@ -93,9 +93,9 @@ and add the `NavigatorViewBinding` view modifier
 struct MyApp: App {
     var body: some Scene {
         WindowGroup {
-            RootScreen()
-                .modifier(NavigatorViewBinding())
-                .environmentObject(Navigator(rootScreen: Screens.rootScreen, viewFactory: MyViewFactory())
+            NavigationView.with(Navigator(rootScreen: Screens.rootScreen, viewFactory: MyViewFactory()) {
+                RootScreen()
+            }    
         }
     }
 }
@@ -286,21 +286,21 @@ struct MyApp: App {
 
     var body: some Scene {
         WindowGroup {
-            RootScreen(currentScreen: .rootScreen)
-                .modifier(NavigatorViewBinding())
-                .environmentObject(navigator)
-                .task {
-                    // mimic a system event, such as a notification 
+            NavigationView.with(navigator) {
+                RootScreen(currentScreen: .rootScreen)
+            }          
+            .task {
+                // mimic a system event, such as a notification 
                     
-                    // create an artificial delay of 10 seconds after the app starts up
-                    try! await Task.sleep(nanoseconds: 10_000_000_000)
-                    
-                    // User navigates to different views, adding to the navStack
-                    
-                    // However far along the user is, this will pop to the first 
-                    // detailScreen with called id, or pop to the root screen
-                    navigator.popToDetailWithSpecificIdOrRoot(id: "detail-123")
-                }
+                // create an artificial delay of 10 seconds after the app starts up
+                try! await Task.sleep(nanoseconds: 10_000_000_000)
+                 
+                // User navigates to different views, adding to the navStack
+                
+                // However far along the user is, this will pop to the first 
+                // detailScreen with called id, or pop to the root screen
+                navigator.popToDetailWithSpecificIdOrRoot(id: "detail-123")
+            }
         }
     }
 }
