@@ -24,9 +24,9 @@ navigate to other Views programatically in your app.
 
 ```swift
 struct DetailScreen: ScreenView {
-    @EnvironmentObject var navigator: Navigator<Screens, MyViewFactory>    
+    @EnvironmentObject var navigator: Navigator<ScreenID, AppViewFactory>    
     @State var showNextScreen: Bool = false
-    var currentScreen: Screens
+    var screenId: ScreenID
     
     var body: some View {
         Button("Next") {
@@ -47,28 +47,28 @@ along with any needed values. Ensure that it conforms
 to `Hashable`
 
 ```swift
-enum Screens: Hashable {
+enum ScreenID: Hashable {
     case rootScreen
     case detailScreen(detailID: String)
 }
 ```
 
 Then create a class that conforms to `ViewFactory` and 
-implement `makeView(screenType:)` so that the given `Screens`
+implement `makeView(screenType:)` so that the given `ScreenID`
 enum returns the associated `View`.
 
 ```swift 
-class MyViewFactory: ViewFactory {
+class AppViewFactory: ViewFactory {
     
     @ViewBuilder
-    func makeView(screenType: ScreenWrapper<Screens>) -> some View {
+    func makeView(screenType: ScreenWrapper<ScreenID>) -> some View {
         switch screenType {
-        case .screenWrapper(let myScreen):
-            switch myScreen {
+        case .screenWrapper(let screenId):
+            switch screenId {
             case .rootScreen:
                 RootScreen()
             case .detailScreen:
-                DetailScreen(currentScreen: myScreen!)
+                DetailScreen(currentScreen: screenId!)
             case .none:
             // EmptyView is fine in the exhaustive case
             // as this is just a placeholder until the 
@@ -84,16 +84,17 @@ class MyViewFactory: ViewFactory {
 ### 2. Initialize Library
 
 In the `@main` app delcaration, where your root view
-is the top level view in the navigation stack, inject
-into the environment the necessary `Navigator` classes
-and add the `NavigatorViewBinding` view modifier
+is the top level view in the navigation stack (or wherever
+you'd like to place a `NavigationView` with programatic navigation)
+initialize the `NavigationView` using the `with(_:)` method to inject
+your instance of `Navigator`
 
 ```swift
 @main
 struct MyApp: App {
     var body: some Scene {
         WindowGroup {
-            NavigationView.with(Navigator(rootScreen: Screens.rootScreen, viewFactory: MyViewFactory()) {
+            NavigationView.with(Navigator(rootScreen: ScreenID.rootScreen, viewFactory: AppViewFactory()) {
                 RootScreen()
             }    
         }
@@ -108,9 +109,9 @@ and apply the `bindNavigation(_:binding:)` view modifier
 
 ```swift
 struct RootScreen: ScreenView {
-    @EnvironmentObject var navigator: Navigator<Screens, MyViewFactory>    
+    @EnvironmentObject var navigator: Navigator<ScreenID, AppViewFactory>    
     @State var showNextScreen: Bool = false
-    var currentScreen = .rootScreen
+    var screenId = .rootScreen
     
     var body: some View {
         List {
@@ -126,9 +127,9 @@ struct RootScreen: ScreenView {
 
 ```swift
 struct DetailScreen: ScreenView {
-    @EnvironmentObject var navigator: Navigator<Screens, MyViewFactory>  
+    @EnvironmentObject var navigator: Navigator<ScreenID, AppViewFactory>    
     @State var showNextScreen: Bool = false
-    var currentScreen: Screens
+    var screenId: ScreenID
     
     var body: some View {
         VStack {
@@ -149,14 +150,14 @@ struct DetailScreen: ScreenView {
 ```
 
 Note that except for the `RootScreen` all other screens 
-should have an `id` in their `Screens` enum value in order
+should have an `id` in their `ScreenID` enum value in order
 to differentiate same screens in the navigation stack. This
 can be in the form of a business logic id `detailID` or some
 deafult id that has no business logic but merely used to id
 the screen
 
 ```swift
-enum Screens: Hashable {
+enum ScreenID: Hashable {
     // ...
     case anotherScreen(id: UUID = UUID())
 }
@@ -170,9 +171,9 @@ View navigation
 
 ```swift
 struct RootScreen: ScreenView {
-    @EnvironmentObject var navigator: Navigator<Screens, MyViewFactory>
+    @EnvironmentObject var navigator: Navigator<ScreenID, AppViewFactory>
     @State var showNextScreen: Bool = false
-    var currentScreen = .rootScreen
+    var screenId = .rootScreen
     
     var body: some View {
         List {
@@ -183,7 +184,7 @@ struct RootScreen: ScreenView {
                 
                 // This can also be called at an abstraction layer like a ViewModel
                 
-                navigator.navigate(to: Screens.detailScreen(detailID: "detail-123"))
+                navigator.navigate(to: ScreenID.detailScreen(detailID: "detail-123"))
             }
         }
         .navigationTitle("Root Screen")
@@ -194,9 +195,9 @@ struct RootScreen: ScreenView {
 
 ```swift
 struct DetailScreen: ScreenView {
-    @EnvironmentObject var navigator: Navigator<Screens, MyViewFactory>    
+    @EnvironmentObject var navigator: Navigator<ScreenID, AppViewFactory>
     @State var showNextScreen: Bool = false
-    var currentScreen: Screens
+    var screenId: ScreenID
     
     var body: some View {
         VStack {
@@ -220,7 +221,7 @@ struct DetailScreen: ScreenView {
 
 ## Advanced
 As stated previously, the `Navigator` class has the property `navStack` which keeps
-a stack (OrderedDictionary) of the `ScreenView` associated `Screens` enums that are 
+a stack (OrderedDictionary) of the `ScreenView` associated `ScreenID` enum values that are 
 currently active in the NavigationView. Clients can use it to execte custom navigation logic.
 ```swift
 
@@ -233,15 +234,15 @@ currently active in the NavigationView. Clients can use it to execte custom navi
 As an example, we can use it create an extention funtion on `Navigator` called `popToDetailWithSpecificIdOrRoot(id: String)`
 
 ```swift
-extension Navigator where ScreenIdentifer == Screens {
+extension Navigator where ScreenIdentifer == ScreenID {
     func popToDetailWithSpecificIdOrRoot(id: String) {
     
         // Since all screens that have been pushed onto the NavigationView
         // are stored in the navStack as keys, we can simply search through
         // them for the specific detail screen with the called id
         
-        if let detailScreen: Screens = navStack.keys.elements.first(where: {
-            if case Screens.detailScreen(let detailID) = $0 { 
+        if let detailScreen: ScreenID = navStack.keys.elements.first(where: {
+            if case ScreenID.detailScreen(let detailID) = $0 { 
                 return detailID == id 
             }
             return false
@@ -282,12 +283,12 @@ struct MyApp: App {
 
     // Keep reference to the navigator, either as a local property or in an abstraction
     // layer, such as an AppCoordinator
-    let navigator = Navigator(rootScreen: Screens.rootScreen, viewFactory: MyViewFactory())
+    let navigator = Navigator(rootScreen: ScreenID.rootScreen, viewFactory: AppViewFactory())
 
     var body: some Scene {
         WindowGroup {
             NavigationView.with(navigator) {
-                RootScreen(currentScreen: .rootScreen)
+                RootScreen()
             }          
             .task {
                 // mimic a system event, such as a notification 

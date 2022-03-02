@@ -23,7 +23,7 @@ public protocol ScreenView: View {
     
     /// The identifier of the current Screen View. To be used to identify the View in
     /// the library's navigation statck
-    var currentScreen: ScreenIdentifier { get }
+    var screenId: ScreenIdentifier { get }
 }
 
 public extension View {
@@ -39,7 +39,7 @@ public extension View {
         .modifier(
             NavigationBinding(
                 navigation: navigable.navigator,
-                currentScreen: navigable.currentScreen,
+                screenId: navigable.screenId,
                 showNextScreenBinding: showNextScreen
             )
         )

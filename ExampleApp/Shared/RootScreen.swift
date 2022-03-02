@@ -10,9 +10,9 @@ import Navigator
 
 struct RootScreen: ScreenView {
 
-    @EnvironmentObject var navigator: Navigator<Screens, MyViewFactory>
+    @EnvironmentObject var navigator: Navigator<ScreenID, AppViewFactory>
     @State var showNextScreen: Bool = false
-    var currentScreen: Screens
+    var screenId: ScreenID
 
     var body: some View {
         List {
@@ -34,11 +34,11 @@ struct RootScreen: ScreenView {
 struct RootView_Preview: PreviewProvider {
     static var previews: some View {
         NavigationView {
-            RootScreen(currentScreen: .rootScreen)
+            RootScreen(screenId: .rootScreen)
                 .environmentObject(
                     Navigator(
-                        rootScreen: Screens.rootScreen,
-                        viewFactory: MyViewFactory()
+                        rootScreen: ScreenID.rootScreen,
+                        viewFactory: AppViewFactory()
                     )
                 )
         }
