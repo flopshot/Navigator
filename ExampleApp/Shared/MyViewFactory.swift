@@ -9,19 +9,19 @@ import Foundation
 import Navigator
 import SwiftUI
 
-class MyViewFactory: ViewFactory {
+class AppViewFactory: ViewFactory {
 
     @ViewBuilder
-    func makeView(screenType: ScreenWrapper<Screens>) -> some View {
+    func makeView(screenType: ScreenWrapper<ScreenID>) -> some View {
         switch screenType {
-        case .screenWrapper(let myScreen):
-            switch myScreen {
+        case .screenWrapper(let screenId):
+            switch screenId {
             case .greenScreen:
-                GreenScreen(currentScreen: myScreen!)
+                GreenScreen(screenId: screenId!)
             case .rootScreen:
-                RootScreen(currentScreen: myScreen!)
+                RootScreen(screenId: screenId!)
             case .blueScreen:
-                BlueScreen(currentScreen: myScreen!)
+                BlueScreen(screenId: screenId!)
             case .none:
                 EmptyView()
             }
@@ -29,7 +29,7 @@ class MyViewFactory: ViewFactory {
     }
 }
 
-enum Screens: Hashable {
+enum ScreenID: Hashable {
     case rootScreen
     case blueScreen(id: UUID = UUID())
     case greenScreen(id: UUID = UUID())

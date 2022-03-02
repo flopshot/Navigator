@@ -13,19 +13,19 @@ public func delay(_ seconds: Double) async {
     try! await Task.sleep(nanoseconds: UInt64(seconds * 1_000_000_000))
 }
 
-func randomScreen() -> Screens {
+func randomScreen() -> ScreenID {
     let randomFlag = Int.random(in: 0...1)
     switch randomFlag {
-    case 0: return Screens.greenScreen()
-    case 1: return Screens.blueScreen()
+    case 0: return ScreenID.greenScreen()
+    case 1: return ScreenID.blueScreen()
     default: fatalError()
     }
 }
 
-extension Navigator where ScreenIdentifer == Screens {
+extension Navigator where ScreenIdentifer == ScreenID {
     func popToFirstGreenScreenOrRoot(id: UUID) {
-        if let greenScreen: Screens = navStack.keys.elements.first(where: {
-            if case Screens.greenScreen(let detailID) = $0 { return detailID == id }
+        if let greenScreen: ScreenID = navStack.keys.elements.first(where: {
+            if case ScreenID.greenScreen(let detailID) = $0 { return detailID == id }
             return false
         }) {
             navStack[greenScreen]!.send(false)

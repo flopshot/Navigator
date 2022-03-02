@@ -19,10 +19,10 @@ struct NavigatorDemoApp: App {
     var body: some Scene {
         WindowGroup {
 
-            let navigator = Navigator(rootScreen: Screens.rootScreen, viewFactory: MyViewFactory())
+            let navigator = Navigator(rootScreen: ScreenID.rootScreen, viewFactory: AppViewFactory())
 
             NavigationView.with(navigator) {
-                RootScreen(currentScreen: .rootScreen)
+                RootScreen(screenId: .rootScreen)
             }
             .accentColor(.black)
 

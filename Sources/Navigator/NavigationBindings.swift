@@ -10,16 +10,16 @@ import SwiftUI
 /// navigate between ScreenViews of their app, dynamically.
 public struct NavigationBinding<ViewFactoryImpl: ViewFactory, ScreenIdentifer: Hashable>: ViewModifier {
     let navigation: Navigator<ScreenIdentifer, ViewFactoryImpl>
-    let currentScreen: ScreenIdentifer
+    let screenId: ScreenIdentifer
     var showNextScreenBinding: Binding<Bool>
     
     public init(
         navigation: Navigator<ScreenIdentifer, ViewFactoryImpl>,
-        currentScreen: ScreenIdentifer,
+        screenId: ScreenIdentifer,
         showNextScreenBinding: Binding<Bool>
     ) {
         self.navigation = navigation
-        self.currentScreen = currentScreen
+        self.screenId = screenId
         self.showNextScreenBinding = showNextScreenBinding
     }
     
@@ -32,7 +32,7 @@ public struct NavigationBinding<ViewFactoryImpl: ViewFactory, ScreenIdentifer: H
                 // This is the hidden NavigationLink of every bound ScreenView
                 // which delegates navigation to the native SwiftUI View navigation
                 NavigationLink(
-                    destination: navigation.nextView(from: currentScreen),
+                    destination: navigation.nextView(from: screenId),
                     isActive: showNextScreenBinding
                 ) {
                     EmptyView()
@@ -41,7 +41,7 @@ public struct NavigationBinding<ViewFactoryImpl: ViewFactory, ScreenIdentifer: H
                 // This relays the Navigation publisher associated with the underlying
                 // ScreenView and updates the View's showNextScreenBinding to
                 // either push or pop Views
-                navigation.navStack.first(where: { $0.key == currentScreen })!.value,
+                navigation.navStack.first(where: { $0.key == screenId })!.value,
                 perform: { shouldShowNextScreen in
                     showNextScreenBinding.wrappedValue = shouldShowNextScreen
                 }
@@ -49,7 +49,7 @@ public struct NavigationBinding<ViewFactoryImpl: ViewFactory, ScreenIdentifer: H
             .onChange(of: showNextScreenBinding.wrappedValue, perform: { shouldShow in
                 // If the user swipes to dismiss or clicks the NavigationBar back
                 // button, this callback will update the Nav State in Navigation
-                if !shouldShow { navigation.onDismiss(currentScreen) }
+                if !shouldShow { navigation.onDismiss(screenId) }
             })
     }
 }

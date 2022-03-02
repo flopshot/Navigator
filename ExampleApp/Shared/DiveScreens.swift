@@ -10,9 +10,9 @@ import Navigator
 
 struct GreenScreen: ScreenView {
 
-    @EnvironmentObject var navigator: Navigator<Screens, MyViewFactory>
+    @EnvironmentObject var navigator: Navigator<ScreenID, AppViewFactory>
     @State var showNextScreen: Bool = false
-    var currentScreen: Screens
+    var screenId: ScreenID
 
     var body: some View {
         Color.green
@@ -51,9 +51,9 @@ struct GreenScreen: ScreenView {
 
 struct BlueScreen: ScreenView {
 
-    @EnvironmentObject var navigator: Navigator<Screens, MyViewFactory>
+    @EnvironmentObject var navigator: Navigator<ScreenID, AppViewFactory>
     @State var showNextScreen: Bool = false
-    var currentScreen: Screens
+    var screenId: ScreenID
 
     var body: some View {
 
@@ -95,14 +95,13 @@ struct BlueScreen: ScreenView {
 struct BlueScreen_Preview: PreviewProvider {
     static var previews: some View {
 
-        let blueScreen = Screens.blueScreen()
+        let blueScreen = ScreenID.blueScreen()
 
-        BlueScreen(
-            currentScreen: blueScreen)
+        BlueScreen(screenId: blueScreen)
             .environmentObject(
                 Navigator(
                     rootScreen: blueScreen,
-                    viewFactory: MyViewFactory()
+                    viewFactory: AppViewFactory()
                 )
             )
     }
@@ -113,13 +112,13 @@ struct BlueScreen_Preview: PreviewProvider {
 struct GreenScreen_Preview: PreviewProvider {
     static var previews: some View {
 
-        let greenScreen = Screens.greenScreen()
+        let greenScreen = ScreenID.greenScreen()
 
-        GreenScreen(currentScreen: greenScreen)
+        GreenScreen(screenId: greenScreen)
             .environmentObject(
                 Navigator(
                     rootScreen: greenScreen,
-                    viewFactory: MyViewFactory()
+                    viewFactory: AppViewFactory()
                 )
             )
     }
