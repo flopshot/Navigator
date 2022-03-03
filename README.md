@@ -68,7 +68,7 @@ class AppViewFactory: ViewFactory {
             case .rootScreen:
                 RootScreen()
             case .detailScreen:
-                DetailScreen(currentScreen: screenId!)
+                DetailScreen(screenId: screenId!)
             case .none:
             // EmptyView is fine in the exhaustive case
             // as this is just a placeholder until the 
